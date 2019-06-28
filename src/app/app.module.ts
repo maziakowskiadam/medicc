@@ -6,12 +6,13 @@ import { MaterialModule } from './material.module';
 import { PatientIndexComponent } from './patient/patient-index/patient-index.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
+import { GeneralModule } from './general/general.module';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PatientIndexComponent
+        PatientIndexComponent,
     ],
     imports: [
         BrowserModule,
@@ -19,6 +20,7 @@ import { RouterModule } from '@angular/router';
         MaterialModule,
         AppRoutingModule,
         RouterModule,
+        GeneralModule
 
     ],
     providers: [],

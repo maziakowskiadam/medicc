@@ -1,16 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './auth/login/login.component';
-import { SignupComponent } from './auth/signup/signup.component';
+import { HomePageComponent } from './general/home-page/home-page.component';
 
 
 
 const appRoutes: Routes = [
     {
         path: '',
-        redirectTo: '/auth/signup',
-        pathMatch: 'full'
+        component: HomePageComponent
     },
+    // {
+    //     path: '',
+    //     redirectTo: '/auth/login',
+    //     pathMatch: 'full'
+    // },
     {
         path: 'auth',
         loadChildren: () => import('./auth/auth.module').then(mod => mod.AuthModule)

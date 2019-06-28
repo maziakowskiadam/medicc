@@ -1,0 +1,28 @@
+<mat-toolbar color="primary">
+    <div fxLayout
+         fxLayoutGap="5px">
+        <button mat-icon-button
+                (click)="onToggleSidenav()"
+                fxHide.gt-sm>
+            <mat-icon>menu</mat-icon>
+        </button>
+        <button mat-flat-button
+                color="primary"
+                routerLink="/">
+            <strong>MCC RESERVATION</strong>
+        </button>
+    </div>
+    <div fxFlex
+         fxLayout
+         fxLayoutAlign="flex-end"
+         fxLayoutGap="10px"
+         fxHide.xs>
+        <a mat-button
+           routerLink="/auth/signup">Zarejestruj się</a>
+        <a mat-button
+           routerLink="/auth/login">Logowanie</a>
+        <a mat-button>
+            <mat-icon>power_settings_new</mat-icon> <span class="nav-caption">Wyloguj</span>
+        </a>
+    </div>
+</mat-toolbar>

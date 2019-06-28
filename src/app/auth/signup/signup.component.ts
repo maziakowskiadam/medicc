@@ -25,6 +25,7 @@ export class SignupComponent implements OnInit {
     email = new FormControl('', [Validators.required, Validators.email]);
     genderPosition = 'M';
     formFilled = true;
+    isHandset = false;
 
     constructor(private _adapter: DateAdapter<any>) {
         this._adapter.setLocale('pl');

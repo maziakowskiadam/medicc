@@ -9,6 +9,11 @@ import {
     MatCheckboxModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule
+
+
 } from '@angular/material';
 
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
@@ -23,7 +28,11 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatCheckboxModule,
         MatRadioModule,
         MatDatepickerModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule
+
 
     ],
     exports: [
@@ -35,7 +44,11 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatCheckboxModule,
         MatRadioModule,
         MatDatepickerModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        MatSidenavModule,
+        MatToolbarModule,
+        MatListModule
+
     ],
 })
 export class MaterialModule { }
