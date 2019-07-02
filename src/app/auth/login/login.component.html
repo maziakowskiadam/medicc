@@ -1,62 +1,50 @@
-<mat-card>
+<mat-card fxFlex.xs="100%"
+          fxFlex.gt-xs="400px">
     <mat-card-title>Zaloguj się</mat-card-title>
     <mat-card-content>
-        <form
-            fxLayout="column"
-            #f="ngForm"
-        >
+        <form fxLayout="column"
+              #f="ngForm"
+              fxLayoutGap="10px">
             <mat-form-field>
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    matInput
-                    ngModel
-                    name="email"
-                    email
-                    required
-                    #emailInput="ngModel"
-                >
+                <input type="email"
+                       placeholder="E-mail"
+                       matInput
+                       minlength="0"
+                       ngModel
+                       name="email"
+                       email
+                       required
+                       #emailInput="ngModel">
                 <mat-hint>Wprowadź swój adres e-mail.</mat-hint>
                 <mat-error *ngIf="emailInput.hasError('required')">E-mail nie może być pusty.</mat-error>
                 <mat-error *ngIf="!emailInput.hasError('required')">E-mail niepoprawny.</mat-error>
             </mat-form-field>
             <mat-form-field hint>
-                <input
-                    type="password"
-                    placeholder="Hasło"
-                    matInput
-                    ngModel
-                    name="password"
-                    required
-                    #passwordInput
-                >
+                <input type="password"
+                       placeholder="Hasło"
+                       matInput
+                       ngModel
+                       name="password"
+                       required
+                       #passwordInput>
                 <mat-hint>Wprowadź swoje hasło.</mat-hint>
                 <mat-error *ngIf="passwordInput.value.length === 0">Wprowadź hasło.</mat-error>
             </mat-form-field>
+            <div fxLayout="column"
+                 fxLayoutAlign="center center">
+                <button mat-raised-button
+                        type="button"
+                        fxLayoutAlign="center center"
+                        color="primary"
+                        class="btn-login"
+                        (click)="onSubmit(f)"
+                        [disabled]="f.invalid"
+                        routerLink="/patient/index">Zaloguj</button>
+                <button mat-button
+                        class="btn-register"
+                        (click)="onRegisterClicked()"
+                        routerLink="/auth/signup">Zarejestruj</button>
+            </div>
         </form>
     </mat-card-content>
-    <mat-card-actions
-        fxLayout="column"
-        fxLayoutAlign="center center"
-    >
-        <button
-            mat-raised-button
-            color="primary"
-            class="btn-login"
-            (click)="onSubmit(f)"
-            [disabled]="f.invalid"
-        >Zaloguj</button>
-
-    </mat-card-actions>
-    <mat-card-footer
-        fxLayout="column"
-        fxLayoutAlign="center center"
-    >
-        <button
-            mat-button
-            class="btn-register"
-            (click)="onRegisterClicked()"
-            routerLink="/auth/signup"
-        >Zarejestruj</button>
-    </mat-card-footer>
 </mat-card>

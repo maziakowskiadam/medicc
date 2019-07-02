@@ -1,37 +1,32 @@
-<mat-card>
+<mat-card fxFlex.xs="100%"
+          fxFlex.gt-xs="400px">
     <mat-card-title>Rejestracja</mat-card-title>
     <mat-card-content>
-        <form
-            fxLayout="column"
-            #f="ngForm"
-            fxLayoutGap="10px"
-        >
+        <form fxLayout="column"
+              #f="ngForm"
+              fxLayoutGap="10px">
             <mat-form-field>
-                <input
-                    type="email"
-                    placeholder="E-mail"
-                    matInput
-                    ngModel
-                    name="email"
-                    email
-                    required
-                    #emailInput="ngModel"
-                >
+                <input type="email"
+                       placeholder="E-mail"
+                       matInput
+                       ngModel
+                       name="email"
+                       email
+                       required
+                       #emailInput="ngModel">
                 <mat-error *ngIf="emailInput.hasError('required')">E-mail nie może być pusty.</mat-error>
                 <mat-error *ngIf="!emailInput.hasError('required')">E-mail niepoprawny.</mat-error>
             </mat-form-field>
 
             <mat-form-field>
-                <input
-                    type="password"
-                    placeholder="Hasło"
-                    matInput
-                    ngModel
-                    name="password"
-                    required
-                    minlength="6"
-                    #passwordInput
-                >
+                <input type="password"
+                       placeholder="Hasło"
+                       matInput
+                       ngModel
+                       name="password"
+                       required
+                       minlength="6"
+                       #passwordInput>
                 <mat-hint align="start">Hasło musi zawierać co najmniej 6 znaków</mat-hint>
                 <mat-error align="start">Hasło musi zawierać co najmniej 6 znaków</mat-error>
                 <mat-error align="end">{{passwordInput.value.length}} / 6</mat-error>
@@ -39,103 +34,78 @@
             </mat-form-field>
 
             <mat-form-field>
-                <input
-                    type="text"
-                    matInput
-                    ngModel
-                    required
-                    placeholder="Imię"
-                    name="firstName"
-                >
+                <input type="text"
+                       matInput
+                       ngModel
+                       required
+                       placeholder="Imię"
+                       name="firstName">
             </mat-form-field>
 
             <mat-form-field>
-                <input
-                    type="text"
-                    matInput
-                    ngModel
-                    placeholder="Nazwisko"
-                    name="lastName"
-                    required
-                >
+                <input type="text"
+                       matInput
+                       ngModel
+                       placeholder="Nazwisko"
+                       name="lastName"
+                       required>
             </mat-form-field>
 
             <mat-form-field>
-                <input
-                    matInput
-                    [matDatepicker]="picker"
-                    placeholder="Data urodzenia"
-                    ngModel
-                    name="dateOfBirth"
-                    required
-                >
-                <mat-datepicker-toggle
-                    matSuffix
-                    [for]="picker"
-                ></mat-datepicker-toggle>
-                <mat-datepicker
-                    [touchUi]="isHandset"
-                    #picker
-                ></mat-datepicker>
+                <input matInput
+                       [matDatepicker]="picker"
+                       placeholder="Data urodzenia"
+                       ngModel
+                       name="dateOfBirth"
+                       required>
+                <mat-datepicker-toggle matSuffix
+                                       [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker [touchUi]="isHandset"
+                                #picker></mat-datepicker>
             </mat-form-field>
 
             <section>
                 <label>Płeć:</label>
-                <mat-radio-group
-                    [(ngModel)]="genderPosition"
-                    name="gender"
-                >
-                    <mat-radio-button
-                        class="example-margin"
-                        value="M"
-                    >Mężczyzna</mat-radio-button>
-                    <mat-radio-button
-                        class="example-margin"
-                        value="F"
-                    >Kobieta</mat-radio-button>
+                <mat-radio-group [(ngModel)]="genderPosition"
+                                 name="gender">
+                    <mat-radio-button class="example-margin"
+                                      value="M">Mężczyzna</mat-radio-button>
+                    <mat-radio-button class="example-margin"
+                                      value="F">Kobieta</mat-radio-button>
                 </mat-radio-group>
             </section>
 
             <mat-form-field>
-                <input
-                    type="text"
-                    matInput
-                    ngModel
-                    placeholder="PESEL"
-                    name="pesel"
-                    #peselInput
-                    maxlength=11
-                    required
-                >
+                <input type="text"
+                       matInput
+                       ngModel
+                       placeholder="PESEL"
+                       name="pesel"
+                       #peselInput
+                       maxlength=11
+                       required>
                 <mat-hint align="end">{{peselInput.value.length}} / 11</mat-hint>
             </mat-form-field>
-            <mat-checkbox
-                required
-                ngModel
-                name="isAgreed"
-            >Potwierdzam, że zapoznałem/am się z <br>
+            <mat-checkbox required
+                          ngModel
+                          name="isAgreed">Potwierdzam, że zapoznałem/am się z <br>
                 Polityką prywatności oraz Regulaminem</mat-checkbox>
 
 
 
         </form>
     </mat-card-content>
-    <mat-card-actions
-        fxLayout
-        fxLayoutAlign="center center"
-    >
-        <button
-            mat-raised-button
-            color="warn"
-            (click)="onCancel()"
-        >Anuluj</button>
-        <button
-            mat-raised-button
-            color="primary"
-            class="btn-submit"
-            (click)="onSubmit(f)"
-            routerLink="/auth/login"
-            [disabled]="f.invalid"
-        >Zarejestruj się</button>
+    <mat-card-actions fxLayout
+                      fxLayoutAlign="center center">
+        <button mat-raised-button
+                color="warn"
+                (click)="onCancel()"
+                routerLink="/">Anuluj</button>
+        <button mat-raised-button
+                color="primary"
+                class="btn-submit"
+                (click)="onSubmit(f)"
+                routerLink="/auth/login"
+                [disabled]="f.invalid">Zarejestruj się</button>
     </mat-card-actions>
 </mat-card>

@@ -3,6 +3,7 @@ import { FormControl, Validators, NgForm } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
+import { AuthService } from '../services/auth.service';
 
 
 const moment = _moment;
@@ -27,7 +28,9 @@ export class SignupComponent implements OnInit {
     formFilled = true;
     isHandset = false;
 
-    constructor(private _adapter: DateAdapter<any>) {
+    constructor(
+        private _adapter: DateAdapter<any>,
+        private authService: AuthService) {
         this._adapter.setLocale('pl');
     }
 
@@ -35,13 +38,12 @@ export class SignupComponent implements OnInit {
     }
 
     onSubmit(form: NgForm) {
-        console.log(form.value);
-        const momentDateObject = form.value.dateOfBirth._i;
-        const dateString = `${momentDateObject.date}.${momentDateObject.month}.${momentDateObject.year}`;
-        console.log(dateString);
+        this.authService.registerUser(
+            { email: form.value.email, password: form.value.password }
+        );
     }
 
     onCancel() {
-        console.log('cancelled')
+        console.log('cancelled');
     }
 }

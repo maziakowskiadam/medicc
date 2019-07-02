@@ -18,10 +18,14 @@
          fxLayoutGap="10px"
          fxHide.xs>
         <a mat-button
-           routerLink="/auth/signup">Zarejestruj się</a>
+           routerLink="/auth/signup"
+           *ngIf="!isAuth">Zarejestruj się</a>
         <a mat-button
-           routerLink="/auth/login">Logowanie</a>
-        <a mat-button>
+           routerLink="/auth/login"
+           *ngIf="!isAuth">Logowanie</a>
+        <a mat-button
+           *ngIf="isAuth"
+           (click)="onLogout()">
             <mat-icon>power_settings_new</mat-icon> <span class="nav-caption">Wyloguj</span>
         </a>
     </div>

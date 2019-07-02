@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, Form, NgForm } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
+import { AuthService } from '../services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -11,17 +13,19 @@ export class LoginComponent implements OnInit {
     // email = new FormControl('', [Validators.required, Validators.email]);
     // password = new FormControl('', [Validators.required]);
 
-    constructor() { }
+    constructor(
+        private authService: AuthService,
+        private _snackBar: MatSnackBar) { }
 
     ngOnInit() {
     }
 
     onSubmit(form: NgForm) {
-        console.log(form.value);
+        this.authService.login({ email: form.value.email, password: form.value.password });
+        this.openSnackBar();
     }
 
-    onRegisterClicked() {
-        console.log('register clicked');
+    openSnackBar() {
+        this._snackBar.open('Zalogowano pomyślnie', 'OK', { duration: 3000 });
     }
-
 }

@@ -1,0 +1,16 @@
+<div fxLayout="row"
+     fxLayoutAlign="center">
+    <form fxFlex.xs="300px"
+          fxFlex.gt-xs="600px"
+          fxLayout="column"
+          fxLayoutAlign="center center">
+        <mat-form-field>
+            <mat-label>Wybierz specjalistę</mat-label>
+            <mat-select [(value)]="selected">
+                <mat-option *ngFor="let spec of specializations"
+                            [value]="spec.name">{{ spec.name | titlecase }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <p>Wybrane: {{selected}}</p>
+    </form>
+</div>

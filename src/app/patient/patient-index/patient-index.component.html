@@ -1,1 +1,11 @@
-<p>patient-index works!</p>
+<mat-tab-group mat-align-tabs="center">
+    <mat-tab label="Umów wizytę">
+        <app-patient-book-appointment></app-patient-book-appointment>
+    </mat-tab>
+    <mat-tab label="Moje wyniki">
+        <app-patient-results></app-patient-results>
+    </mat-tab>
+    <mat-tab label="Ustawienia konta">
+        <app-patient-account-settings></app-patient-account-settings>
+    </mat-tab>
+</mat-tab-group>

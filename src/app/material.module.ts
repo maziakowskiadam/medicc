@@ -11,8 +11,10 @@ import {
     MatDatepickerModule,
     MatSidenavModule,
     MatToolbarModule,
-    MatListModule
-
+    MatListModule,
+    MatTabsModule,
+    MatSnackBarModule,
+    MatSelectModule
 
 } from '@angular/material';
 
@@ -31,7 +33,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatMomentDateModule,
         MatSidenavModule,
         MatToolbarModule,
-        MatListModule
+        MatListModule,
+        MatTabsModule,
+        MatSelectModule
 
 
     ],
@@ -47,7 +51,10 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatMomentDateModule,
         MatSidenavModule,
         MatToolbarModule,
-        MatListModule
+        MatListModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        MatSelectModule
 
     ],
 })

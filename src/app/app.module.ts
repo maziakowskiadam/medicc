@@ -3,16 +3,15 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
-import { PatientIndexComponent } from './patient/patient-index/patient-index.component';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { GeneralModule } from './general/general.module';
+import { AuthService } from './auth/services/auth.service';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PatientIndexComponent,
     ],
     imports: [
         BrowserModule,
@@ -20,10 +19,9 @@ import { GeneralModule } from './general/general.module';
         MaterialModule,
         AppRoutingModule,
         RouterModule,
-        GeneralModule
-
+        GeneralModule,
     ],
-    providers: [],
+    providers: [AuthService],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

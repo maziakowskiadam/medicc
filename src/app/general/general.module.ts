@@ -9,6 +9,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { ToolbarComponent } from './navigation/toolbar/toolbar.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
+import { AboutComponent } from './about/about.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { SidenavComponent } from './navigation/sidenav/sidenav.component';
         SidenavComponent,
         HomePageComponent,
         ToolbarComponent,
-        SidenavListComponent
+        SidenavListComponent,
+        AboutComponent
     ],
     imports: [
         CommonModule,
