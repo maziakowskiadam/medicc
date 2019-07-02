@@ -36,7 +36,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
     onLogout() {
         this.authService.logout();
-        this.router.navigate(['/']);
     }
 
 

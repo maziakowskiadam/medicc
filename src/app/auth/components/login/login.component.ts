@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators, Form, NgForm } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
     selector: 'app-login',
@@ -22,10 +22,6 @@ export class LoginComponent implements OnInit {
 
     onSubmit(form: NgForm) {
         this.authService.login({ email: form.value.email, password: form.value.password });
-        this.openSnackBar();
     }
 
-    openSnackBar() {
-        this._snackBar.open('Zalogowano pomyślnie', 'OK', { duration: 3000 });
-    }
 }

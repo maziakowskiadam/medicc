@@ -30,8 +30,8 @@ export class SidenavListComponent implements OnInit {
     }
 
     onLogout() {
+        this.onClose();
         this.authService.logout();
-        this.router.navigate(['/']);
     }
 
     onClose() {

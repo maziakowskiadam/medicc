@@ -3,7 +3,8 @@ import { FormControl, Validators, NgForm } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 
 const moment = _moment;
@@ -30,7 +31,8 @@ export class SignupComponent implements OnInit {
 
     constructor(
         private _adapter: DateAdapter<any>,
-        private authService: AuthService) {
+        private authService: AuthService,
+        private router: Router) {
         this._adapter.setLocale('pl');
     }
 
@@ -44,6 +46,6 @@ export class SignupComponent implements OnInit {
     }
 
     onCancel() {
-        console.log('cancelled');
+        this.router.navigate(['/auth/login']);
     }
 }
