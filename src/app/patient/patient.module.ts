@@ -6,16 +6,16 @@ import { RouterModule } from '@angular/router';
 import { PatientIndexComponent } from './patient-index/patient-index.component';
 import { PatientRoutingModule } from './patient-routing.module';
 import { PatientBookAppointmentComponent } from './patient-book-appointment/patient-book-appointment.component';
-import { PatientResultsComponent } from './patient-results/patient-results.component';
 import { PatientAccountSettingsComponent } from './patient-account-settings/patient-account-settings.component';
+import { PatientHistoryComponent } from './patient-history/patient-history.component';
 
 
 @NgModule({
     declarations: [
         PatientIndexComponent,
         PatientBookAppointmentComponent,
-        PatientResultsComponent,
         PatientAccountSettingsComponent,
+        PatientHistoryComponent
     ],
     imports: [
         PatientRoutingModule,

@@ -1,5 +1,5 @@
-import { User } from '../models/user.model';
-import { AuthData } from '../models/auth-data.model';
+import { User } from '../../auth/models/user.model';
+import { AuthData } from '../../auth/models/auth-data.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
