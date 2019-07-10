@@ -1,17 +1,120 @@
-<div fxLayout="row"
+<!-- <div fxLayout="row"
      fxLayoutAlign="center"
      class="booking-form">
-    <form fxFlex.xs="300px"
+    <form #f="ngForm"
+          fxLayoutGap="10px"
+          fxFlex.xs="300px"
           fxFlex.gt-xs="600px"
           fxLayout="column"
           fxLayoutAlign="center center">
         <mat-form-field>
             <mat-label>Wybierz specjalistę</mat-label>
-            <mat-select [(value)]="selected">
+            <mat-select [(value)]="selectedSpecialization"
+                        required
+                        ngModel
+                        name="specialization">
                 <mat-option *ngFor="let spec of specializations"
                             [value]="spec.name">{{ spec.name | titlecase }}</mat-option>
             </mat-select>
         </mat-form-field>
-        <p>Wybrane: {{selected}}</p>
+        <mat-form-field>
+            <mat-label>Wybierz lekarza</mat-label>
+            <mat-select [(value)]="selectedDoctor"
+                        required
+                        ngModel
+                        name="doctor">
+                <mat-option *ngFor="let doc of doctors"
+                            [value]="doc.name">{{ doc.name | titlecase }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput
+                   [matDatepicker]="picker"
+                   placeholder="Wybierz datę"
+                   ngModel
+                   name="dateOfBirth"
+                   required>
+            <mat-datepicker-toggle matSuffix
+                                   [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <button mat-raised-button
+                color="primary"
+                class="btn-submit"
+                (click)="onSubmit(f)"
+                [disabled]="f.invalid">Wyszukaj wizyty</button>
+    </form>
+</div> -->
+
+
+<div fxLayout="row"
+     fxLayoutAlign="center"
+     class="booking-form">
+    <form #f="ngForm"
+          fxLayoutGap="10px"
+          fxFlex.xs="300px"
+          fxFlex.gt-xs="600px"
+          fxLayout="column"
+          fxLayoutAlign="center center">
+
+        <mat-form-field>
+            <input type="text"
+                   matInput
+                   ngModel
+                   required
+                   placeholder="Pacjent"
+                   name="patient">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Wybierz lekarza</mat-label>
+            <mat-select [(value)]="selectedDoctor"
+                        required
+                        ngModel
+                        name="doctor">
+                <mat-option *ngFor="let doc of doctors"
+                            [value]="doc.name">{{ doc.name | titlecase }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Rodzaj wizyty</mat-label>
+            <mat-select [(value)]="selectedAppType"
+                        required
+                        ngModel
+                        name="type">
+                <mat-option *ngFor="let type of appointmentTypes"
+                            [value]="type.name">{{ type.name | titlecase }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div fxLayout.xs="column"
+             fxLayoutGap.gt-xs="20px">
+            <mat-form-field>
+                <input matInput
+                       [matDatepicker]="picker"
+                       placeholder="Wybierz datę"
+                       ngModel
+                       name="date"
+                       required>
+                <mat-datepicker-toggle matSuffix
+                                       [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field>
+                <input matInput
+                       type="time"
+                       ngModel
+                       name="startTime"
+                       placeholder="Godzina">
+            </mat-form-field>
+        </div>
+
+        <button mat-raised-button
+                color="primary"
+                class="btn-submit"
+                (click)="onSubmit(f)"
+                [disabled]="f.invalid">Wyszukaj wizyty</button>
     </form>
 </div>

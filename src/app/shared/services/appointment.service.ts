@@ -1,21 +1,45 @@
-import { Appointment } from '../models/appointment.model';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 
+import { Appointment } from '../models/appointment.model';
+import { Subject } from 'rxjs';
+
+@Injectable()
 export class AppointmentService {
 
-    appointments: Appointment[] = [
-        { date: new Date('07.03.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('07.04.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('07.05.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('07.07.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('07.13.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('07.18.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('09.03.2019'), doctorId: 'Jan Kowalski' },
-        { date: new Date('12.03.2019'), doctorId: 'Łukasz Wesołowski' },
-        { date: new Date('03.03.2019'), doctorId: 'Łukasz Wesołowski' },
-    ];
+    appointments: Appointment[] = [];
+    appointmentsChanged = new Subject<Appointment[]>();
 
-    getAppointments() {
-        return this.appointments.slice();
+    constructor(
+        private db: AngularFirestore,
+    ) { }
+
+    addAppointment(appointment: Appointment) {
+        this.addDataToDatabase(appointment);
     }
 
+    fetchAllAppointments() {
+        this.db.collection('appointments')
+            .snapshotChanges()
+            .pipe(
+                map(docArray => {
+                    return docArray.map(doc => {
+                        return {
+                            id: doc.payload.doc.id,
+                            ...doc.payload.doc.data()
+                        };
+                    });
+                }))
+            .subscribe((appointments: Appointment[]) => {
+                this.appointments = appointments;
+                this.appointmentsChanged.next([...this.appointments]);
+            }
+
+            );
+    }
+
+    private addDataToDatabase(appointment: Appointment) {
+        this.db.collection('appointments').add(appointment);
+    }
 }

@@ -8,6 +8,7 @@ import { PatientRoutingModule } from './patient-routing.module';
 import { PatientBookAppointmentComponent } from './patient-book-appointment/patient-book-appointment.component';
 import { PatientAccountSettingsComponent } from './patient-account-settings/patient-account-settings.component';
 import { PatientHistoryComponent } from './patient-history/patient-history.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { PatientHistoryComponent } from './patient-history/patient-history.compo
         CommonModule,
         MaterialModule,
         FlexLayoutModule,
-        RouterModule
+        RouterModule,
+        FormsModule
     ],
     exports: []
 })

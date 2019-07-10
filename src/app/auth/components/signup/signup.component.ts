@@ -14,10 +14,7 @@ const moment = _moment;
     templateUrl: './signup.component.html',
     styleUrls: ['./signup.component.scss'],
     providers: [
-
         { provide: MAT_DATE_LOCALE, useValue: 'pl-PL' },
-
-
         { provide: DateAdapter, useClass: MomentDateAdapter, deps: [MAT_DATE_LOCALE] },
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     ],
@@ -33,10 +30,10 @@ export class SignupComponent implements OnInit {
         private _adapter: DateAdapter<any>,
         private authService: AuthService,
         private router: Router) {
-        this._adapter.setLocale('pl');
     }
 
     ngOnInit() {
+        this._adapter.setLocale('pl');
     }
 
     onSubmit(form: NgForm) {
@@ -47,6 +44,6 @@ export class SignupComponent implements OnInit {
 
     onCancel(form: NgForm) {
         // this.router.navigate(['/auth/login']);
-        console.log(form.value.dateOfBirth.format('MM.DD.YYYY'));
+        console.log(form.value.dateOfBirth._d);
     }
 }

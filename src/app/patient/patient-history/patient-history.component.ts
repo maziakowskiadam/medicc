@@ -1,28 +1,41 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
 import { AppointmentService } from 'src/app/shared/services/appointment.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Appointment } from 'src/app/shared/models/appointment.model';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-patient-history',
     templateUrl: './patient-history.component.html',
     styleUrls: ['./patient-history.component.scss']
 })
-export class PatientHistoryComponent implements OnInit, AfterViewInit {
+export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    displayedColumns = ['date', 'doctorId', 'actions'];
+    displayedColumns = ['date', 'doctor', 'actions'];
     dataSource = new MatTableDataSource<Appointment>();
+    appointments: Appointment[];
+    appointmentSubscription: Subscription;
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
 
     constructor(
-        private appointmentService: AppointmentService
+        private appointmentService: AppointmentService,
+        private db: AngularFirestore
     ) { }
 
 
     ngOnInit() {
-        this.dataSource.data = this.appointmentService.getAppointments();
+        this.appointmentSubscription = this.appointmentService.appointmentsChanged
+            .subscribe(appointments => {
+                this.dataSource.data = appointments;
+            }
+
+            );
+        this.appointmentService.fetchAllAppointments();
     }
 
     ngAfterViewInit() {
@@ -36,5 +49,9 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit {
         if (this.dataSource.paginator) {
             this.dataSource.paginator.firstPage();
         }
+    }
+
+    ngOnDestroy() {
+        this.appointmentSubscription.unsubscribe();
     }
 }
