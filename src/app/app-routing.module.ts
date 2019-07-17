@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomePageComponent } from './general/home-page/home-page.component';
-import { AboutComponent } from './general/about/about.component';
-import { AuthGuard } from './auth/guards/auth.guard';
+import { HomePageComponent } from './modules/general/home-page/home-page.component';
+import { AboutComponent } from './modules/general/about/about.component';
+import { AuthGuard } from './shared/guards/auth.guard';
+import { PatientGuard } from './shared/guards/patient.guard';
+
 
 
 
@@ -22,13 +24,24 @@ const appRoutes: Routes = [
     // },
     {
         path: 'auth',
-        loadChildren: () => import('./auth/auth.module').then(mod => mod.AuthModule)
+        loadChildren: () => import('./modules/auth/auth.module').then(mod => mod.AuthModule)
     },
     {
         path: 'patient',
-        loadChildren: () => import('./patient/patient.module').then(mod => mod.PatientModule),
-        // canActivate: [AuthGuard] // comment out this line to turn on/off AuthGuard
+        loadChildren: () => import('./modules/patient/patient.module').then(mod => mod.PatientModule),
+        // canActivate: [PatientGuard] // comment out this line to turn on/off AuthGuard
     },
+
+    // {
+    //     path: 'management',
+    //     loadChildren: () => import('./modules/management/management.module').then(mod => mod.ManagementModule),
+    //     canActivate: [ManagementGuard] // comment out this line to turn on/off AuthGuard
+    // },
+    // {
+    //     path: 'doctor',
+    //     loadChildren: () => import('./modules/doctor/doctor.module').then(mod => mod.DoctorModule),
+    //     canActivate: [DoctorGuard] // comment out this line to turn on/off AuthGuard
+    // },
 ];
 
 @NgModule({

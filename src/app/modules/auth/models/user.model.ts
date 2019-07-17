@@ -1,5 +1,12 @@
+export interface Roles {
+    doctor: boolean;
+    management: boolean;
+    patient: boolean;
+    patientUnauthorized: boolean;
+}
+
 export interface User {
-    userId: string;
+    uid?: string;
     email: string;
-    role?: string;
+    roles: Roles;
 }

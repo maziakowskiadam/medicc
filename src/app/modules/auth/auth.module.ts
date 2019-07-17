@@ -3,9 +3,10 @@ import { SignupComponent } from './components/signup/signup.component';
 import { LoginComponent } from './components/login/login.component';
 import { CommonModule } from '@angular/common';
 import { AuthRoutingModule } from './auth-routing.module';
-import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
+import { MaterialModule } from 'src/app/material.module';
+import { PatientGuard } from '../../shared/guards/patient.guard';
 
 
 @NgModule({
@@ -20,6 +21,9 @@ import { FormsModule } from '@angular/forms';
         FlexLayoutModule,
         FormsModule
     ],
-    exports: []
+    exports: [],
+    providers: [
+        PatientGuard
+    ]
 })
 export class AuthModule { }

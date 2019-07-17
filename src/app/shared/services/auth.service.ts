@@ -1,82 +1,94 @@
-import { User } from '../../auth/models/user.model';
-import { AuthData } from '../../auth/models/auth-data.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
+import { User } from 'src/app/modules/auth/models/user.model';
+import { AuthData } from 'src/app/modules/auth/models/auth-data.model';
+import { switchMap } from 'rxjs/operators';
+import { auth } from 'firebase';
 
 
 @Injectable()
 export class AuthService {
 
     authStatus = new Subject<boolean>();
-    private user: User;
+    isAuthenticated = false;
+    user$: Observable<User>;
 
     constructor(
-        private router: Router,
-        // tslint:disable-next-line: variable-name
-        private _snackBar: MatSnackBar,
         private afAuth: AngularFireAuth,
-        private db: AngularFirestore
-    ) { }
+        private afs: AngularFirestore,
+        private _snackBar: MatSnackBar,
+        private router: Router) {
 
-    registerUser(authData: AuthData) {
+        this.user$ = this.afAuth.authState
+            .pipe(switchMap(user => {
+                if (user) {
+                    return this.afs.doc<User>(`users/${user.uid}`).valueChanges();
+                } else {
+                    return of(null);
+                }
+            }));
+    }
+
+    // Registering Patient into users database
+
+    registerPatientUnauthorized(authData: AuthData) {
         this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
             .then(result => {
-                console.log(result);
                 this._snackBar.open('Zarejestrowano', 'OK', { duration: 2000 });
-                this.addPatientUnauthorizedToDatabase(authData.email);
+                this.addPatientUnauthorizedToDatabase(authData.email, result.user.uid);
             })
             .catch(error => {
                 console.log(error);
                 this._snackBar.open('Jakiś błąd', 'OK', { duration: 2000 });
             });
-
-
-
-
     }
 
     login(authData: AuthData) {
-
-        this.authSuccess();
+        this.afAuth.auth.signInWithEmailAndPassword(
+            authData.email,
+            authData.password)
+            .then(result => {
+                console.log('Zalogowano');
+                this.authSuccess();
+            })
+            .catch(error => {
+                console.error(error);
+                this._snackBar.open('Jakiś błąd', 'OK', { duration: 2000 });
+            });
     }
 
     logout() {
-        this.user = null;
+        this.afAuth.auth.signOut();
+        this.isAuthenticated = false;
         this.authStatus.next(false);
         this._snackBar.open('Wylogowano', 'OK', { duration: 3000 });
         this.router.navigate(['/auth/login']);
     }
 
-    getUser() {
-        return { ... this.user };
-    }
 
     isAuth() {
-        return this.user != null;
+        return this.isAuthenticated;
     }
 
     authSuccess() {
-        this._snackBar.open('Zalogowano pomyślnie', 'OK', { duration: 3000 });
+        this.isAuthenticated = true;
         this.authStatus.next(true);
-        // this.router.navigate(['/patient/index']);
+        this.router.navigate(['/patient/index']);
     }
 
-
-
-
-    addPatientUnauthorizedToDatabase(emailAddress: string) {
-        this.db.collection('users').add(
+    addPatientUnauthorizedToDatabase(email: string, uid: string) {
+        this.afs.collection('users').doc(`${uid}`).set(
             {
-                email: emailAddress,
+                uid,
+                email,
                 roles: {
                     doctor: false,
                     management: false,
-                    patient: false,
+                    patient: true,
                     patientUnauthorized: true
                 }
             }

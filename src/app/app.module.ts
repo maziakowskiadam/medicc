@@ -5,15 +5,15 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { GeneralModule } from './general/general.module';
 import { AuthService } from './shared/services/auth.service';
-import { ResultService } from './shared/services/result.service';
 import { AppointmentService } from './shared/services/appointment.service';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { GeneralModule } from './modules/general/general.module';
+import { PatientGuard } from './shared/guards/patient.guard';
 
 
 
@@ -35,8 +35,8 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     ],
     providers: [
         AuthService,
-        ResultService,
-        AppointmentService
+        AppointmentService,
+        PatientGuard
     ],
     bootstrap: [AppComponent]
 })
