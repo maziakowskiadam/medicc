@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 
 @Injectable()
@@ -14,22 +17,31 @@ export class AuthService {
 
     constructor(
         private router: Router,
-        private _snackBar: MatSnackBar
+        // tslint:disable-next-line: variable-name
+        private _snackBar: MatSnackBar,
+        private afAuth: AngularFireAuth,
+        private db: AngularFirestore
     ) { }
 
     registerUser(authData: AuthData) {
-        this.user = {
-            email: authData.email,
-            userId: `${Math.round(Math.random() * 1000000)}`
-        };
-        this.authSuccess();
+        this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
+            .then(result => {
+                console.log(result);
+                this._snackBar.open('Zarejestrowano', 'OK', { duration: 2000 });
+                this.addPatientUnauthorizedToDatabase(authData.email);
+            })
+            .catch(error => {
+                console.log(error);
+                this._snackBar.open('Jakiś błąd', 'OK', { duration: 2000 });
+            });
+
+
+
+
     }
 
     login(authData: AuthData) {
-        this.user = {
-            email: authData.email,
-            userId: `${Math.round(Math.random() * 1000000)}`
-        };
+
         this.authSuccess();
     }
 
@@ -51,8 +63,25 @@ export class AuthService {
     authSuccess() {
         this._snackBar.open('Zalogowano pomyślnie', 'OK', { duration: 3000 });
         this.authStatus.next(true);
-        this.router.navigate(['/patient/index']);
+        // this.router.navigate(['/patient/index']);
     }
 
+
+
+
+    addPatientUnauthorizedToDatabase(emailAddress: string) {
+        this.db.collection('users').add(
+            {
+                email: emailAddress,
+                roles: {
+                    doctor: false,
+                    management: false,
+                    patient: false,
+                    patientUnauthorized: true
+                }
+            }
+        );
+        console.log('Pacjent dodany');
+    }
 
 }

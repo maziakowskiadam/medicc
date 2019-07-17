@@ -12,6 +12,9 @@ import { AppointmentService } from './shared/services/appointment.service';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireDatabaseModule } from '@angular/fire/database';
+
 
 
 @NgModule({
@@ -26,7 +29,9 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
         RouterModule,
         GeneralModule,
         AngularFireModule.initializeApp(environment.firebase),
-        AngularFirestoreModule
+        AngularFirestoreModule,
+        AngularFireAuthModule,
+        AngularFireDatabaseModule
     ],
     providers: [
         AuthService,
