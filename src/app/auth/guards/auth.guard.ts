@@ -14,6 +14,7 @@ export class AuthGuard implements CanActivate {
         if (this.authService.isAuth()) {
             return true;
         } else {
+            console.error('Must be authenticated to visit patient index.');
             this.router.navigate(['/auth/login']);
         }
     }

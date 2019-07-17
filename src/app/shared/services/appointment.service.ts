@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Appointment } from '../models/appointment.model';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
 export class AppointmentService {
 
     appointments: Appointment[] = [];
     appointmentsChanged = new Subject<Appointment[]>();
+    firebaseSubs: Subscription[];
 
     constructor(
-        private db: AngularFirestore,
+        private afs: AngularFirestore,
     ) { }
 
     addAppointment(appointment: Appointment) {
@@ -20,7 +21,7 @@ export class AppointmentService {
     }
 
     fetchAllAppointments() {
-        this.db.collection('appointments')
+        this.firebaseSubs.push(this.afs.collection('appointments')
             .snapshotChanges()
             .pipe(
                 map(docArray => {
@@ -34,12 +35,16 @@ export class AppointmentService {
             .subscribe((appointments: Appointment[]) => {
                 this.appointments = appointments;
                 this.appointmentsChanged.next([...this.appointments]);
-            }
+            }));
+    }
 
-            );
+    cancelSubs() {
+        this.firebaseSubs.forEach(element => {
+            element.unsubscribe();
+        });
     }
 
     private addDataToDatabase(appointment: Appointment) {
-        this.db.collection('appointments').add(appointment);
+        this.afs.collection('appointments').add(appointment);
     }
 }

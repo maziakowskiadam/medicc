@@ -27,7 +27,7 @@ const appRoutes: Routes = [
     {
         path: 'patient',
         loadChildren: () => import('./patient/patient.module').then(mod => mod.PatientModule),
-        // canActivate: [AuthGuard] // comment out this line to turn on/off AuthGuard
+        canActivate: [AuthGuard] // comment out this line to turn on/off AuthGuard
     },
 ];
 

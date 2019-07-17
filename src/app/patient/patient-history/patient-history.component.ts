@@ -32,6 +32,8 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy
         this.appointmentSubscription = this.appointmentService.appointmentsChanged
             .subscribe(appointments => {
                 this.dataSource.data = appointments;
+            }, error => {
+                console.log(error);
             }
 
             );

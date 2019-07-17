@@ -7,11 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
 import { GeneralModule } from './general/general.module';
 import { AuthService } from './shared/services/auth.service';
-import { ResultService } from './shared/services/result.service';
-import { AppointmentService } from './shared/services/appointment.service';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AppointmentService } from './shared/services/appointment.service';
 
 
 @NgModule({
@@ -26,11 +26,11 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
         RouterModule,
         GeneralModule,
         AngularFireModule.initializeApp(environment.firebase),
-        AngularFirestoreModule
+        AngularFirestoreModule,
+        AngularFireAuthModule
     ],
     providers: [
         AuthService,
-        ResultService,
         AppointmentService
     ],
     bootstrap: [AppComponent]
