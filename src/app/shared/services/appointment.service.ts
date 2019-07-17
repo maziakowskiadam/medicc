@@ -10,7 +10,7 @@ export class AppointmentService {
 
     appointments: Appointment[] = [];
     appointmentsChanged = new Subject<Appointment[]>();
-    firebaseSubs: Subscription[];
+    firebaseSubs: Subscription[] = [];
 
     constructor(
         private afs: AngularFirestore,
