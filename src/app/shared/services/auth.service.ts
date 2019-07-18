@@ -78,10 +78,11 @@ export class AuthService {
 
     logout() {
         this.afAuth.auth.signOut();
-        this.cancelAuthSubs();
         this.role.next('NONE');
-        this.uiService.displaySnackbarNotification('Wylogowano');
+        this.cancelAuthSubs();
+        this.dbService.cancelSubs();
         this.router.navigate(['/']);
+        this.uiService.displaySnackbarNotification('Wylogowano');
     }
 
 
@@ -96,7 +97,7 @@ export class AuthService {
             roles: {
                 management: false,
                 doctor: false,
-                patient: true,
+                patient: false,
                 patientUnauthorized: true
             }
         });
@@ -113,27 +114,12 @@ export class AuthService {
             } else if (u.roles.doctor) {
                 this.role.next('DOCTOR');
                 this.router.navigate(['doctor/index']);
+            } else if (u.roles.patientUnauthorized) {
+                this.role.next('PATIENT_UNAUTHORIZED');
+                this.router.navigate(['/']);
             }
-        }, error => {
-            console.error(error);
-        }
+        }, error => { }
         ));
-    }
-
-    isManagement(uid: string) {
-        this.afs.collection('users').doc(uid).valueChanges()
-            .subscribe(
-                (u: User) => {
-                    if (u.roles.management) { return true; }
-                });
-    }
-
-    isPatient(uid: string) {
-        this.afs.collection('users').doc(uid).valueChanges()
-            .subscribe(
-                (u: User) => {
-                    if (u.roles.patient) { return true; }
-                });
     }
 
     cancelAuthSubs() {

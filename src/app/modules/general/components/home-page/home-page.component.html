@@ -1,5 +1,4 @@
-<div class="welcome"
-     fxLayout="column"
+<div fxLayout="column"
      fxLayoutAlign="center center"
      fxLayoutGap="10px">
     <h1>Welcome to MCC Reservation System</h1>
@@ -14,4 +13,13 @@
        routerLink="doctor/index">Doctor Index</a>
     <a mat-button
        routerLink="about">About</a>
+    <br>
+    <div fxLayout="column"
+         fxLayoutAlign="center center"
+         style="color: red;"
+         *ngIf="isUnauthorized">
+        <h3>You are currently unauthorized.</h3>
+        <h3>Please visit your hospital in order to confirm your account. </h3>
+
+    </div>
 </div>

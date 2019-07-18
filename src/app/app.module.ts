@@ -14,7 +14,7 @@ import { UiService } from './shared/services/ui.service';
 import { DatabaseService } from './shared/services/database.service';
 import { GeneralModule } from './modules/general/general.module';
 import { ManagementGuard } from './guards/management.guard';
-
+// import localeFr from '@angular/common/locales/pl';
 
 @NgModule({
     declarations: [

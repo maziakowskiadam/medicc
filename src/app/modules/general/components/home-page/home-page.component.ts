@@ -1,15 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
-  selector: 'app-home-page',
-  templateUrl: './home-page.component.html',
-  styleUrls: ['./home-page.component.scss']
+    selector: 'app-home-page',
+    templateUrl: './home-page.component.html',
+    styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent implements OnInit {
+export class HomePageComponent implements OnInit, OnDestroy {
 
-  constructor() { }
+    isUnauthorized: boolean;
 
-  ngOnInit() {
-  }
+    constructor(
+        private authService: AuthService,
+    ) { }
+
+    ngOnInit() {
+        this.authService.role.subscribe(r => {
+            if (r === 'PATIENT_UNAUTHORIZED') {
+                this.isUnauthorized = true;
+                console.log(r);
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.isUnauthorized = false;
+    }
 
 }
