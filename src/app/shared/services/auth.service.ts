@@ -1,4 +1,4 @@
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -12,10 +12,10 @@ import { User } from '../models/user.model';
 @Injectable()
 export class AuthService {
 
-    authStatus = new Subject<boolean>();
     private isAuthenticated = false;
-    private isManag = false;
-    private isPat = false;
+    authStatus = new Subject<boolean>();
+    role = new BehaviorSubject<string>('NONE');
+    authSubs: Subscription[] = [];
 
 
     constructor(
@@ -33,12 +33,13 @@ export class AuthService {
                     this.isAuthenticated = true;
                     this.authStatus.next(true);
                     this.uiService.displaySnackbarNotification('Zalogowano');
-                    // this.router.navigate(['/patient/index']);
+                    this.checkRoleAndNavigate(user.uid);
                 } else {
-                    this.dbService.cancelSubs();
                     this.isAuthenticated = false;
                     this.authStatus.next(false);
-                    // this.router.navigate(['/']);
+                    this.uiService.displaySnackbarNotification('Proszę się zalogować');
+                    this.router.navigate(['/']);
+                    console.log(this.role.value);
                 }
             }
         );
@@ -52,7 +53,6 @@ export class AuthService {
             .then(result => {
                 this.uiService.loadingStateChanged.next(false);
                 this.registerPatientInDatabase(result.user.email, result.user.uid);
-                console.log('Zarejestrowano pacjenta');
                 this.router.navigate(['patient/index']);
             }).catch(error => {
                 this.uiService.loadingStateChanged.next(false);
@@ -68,8 +68,7 @@ export class AuthService {
             authData.password)
             .then(result => {
                 this.uiService.loadingStateChanged.next(false);
-                console.log('zalogowano');
-                this.router.navigate(['patient/index']);
+                this.checkRoleAndNavigate(result.user.uid);
             }).catch(error => {
                 this.uiService.loadingStateChanged.next(false);
                 this.uiService.displaySnackbarNotification(error.message);
@@ -79,6 +78,8 @@ export class AuthService {
 
     logout() {
         this.afAuth.auth.signOut();
+        this.cancelAuthSubs();
+        this.role.next('NONE');
         this.uiService.displaySnackbarNotification('Wylogowano');
         this.router.navigate(['/']);
     }
@@ -101,51 +102,45 @@ export class AuthService {
         });
     }
 
-    isManagement() {
-
-        if (this.afAuth.user) {
-            this.afAuth.user.subscribe(u => {
-                this.afs.collection('users')
-                    .doc(u.uid)
-                    .valueChanges()
-                    .subscribe((result: User) => {
-                        if (result.roles.management) {
-                            this.isManag = true;
-                        } else { return false; }
-                    }, error => { });
-            });
-            return this.isManag;
-        } else { return this.isManag = false; }
-
-    }
-
-    isPatient() {
-        if (this.afAuth.user) {
-            this.afAuth.user.subscribe(u => {
-                this.afs.collection('users')
-                    .doc(u.uid)
-                    .valueChanges()
-                    .subscribe((result: User) => {
-                        if (result.roles.patient) {
-                            this.isPat = true;
-                        } else { return false; }
-                    }, error => { });
-            });
-            return this.isPat;
-        } else { return this.isPat; }
-    }
-
-    navigateToRole() {
-        if (this.isManag) {
-            this.router.navigate(['management/index']);
-        } else if (this.isPat) {
-            this.router.navigate(['patient/index']);
+    checkRoleAndNavigate(uid: string) {
+        this.authSubs.push(this.afs.collection('users').doc(uid).valueChanges().subscribe((u: User) => {
+            if (u.roles.management) {
+                this.role.next('MANAGEMENT');
+                this.router.navigate(['management/index']);
+            } else if (u.roles.patient) {
+                this.role.next('PATIENT');
+                this.router.navigate(['patient/index']);
+            } else if (u.roles.doctor) {
+                this.role.next('DOCTOR');
+                this.router.navigate(['doctor/index']);
+            }
+        }, error => {
+            console.error(error);
         }
+        ));
     }
 
-    checkRole() {
-
+    isManagement(uid: string) {
+        this.afs.collection('users').doc(uid).valueChanges()
+            .subscribe(
+                (u: User) => {
+                    if (u.roles.management) { return true; }
+                });
     }
 
+    isPatient(uid: string) {
+        this.afs.collection('users').doc(uid).valueChanges()
+            .subscribe(
+                (u: User) => {
+                    if (u.roles.patient) { return true; }
+                });
+    }
+
+    cancelAuthSubs() {
+        this.authSubs.forEach(sub => {
+            sub.unsubscribe();
+        });
+    }
 
 }
+

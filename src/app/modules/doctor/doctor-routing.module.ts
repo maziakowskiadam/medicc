@@ -7,11 +7,6 @@ const routes: Routes = [
         path: 'index',
         component: DoctorIndexComponent
     },
-    // {
-    //     path: 'management',
-    //     component: ManagementIndexComponent,
-    //     canActivate: [ManagementGuard]
-    // }
 ];
 
 @NgModule({

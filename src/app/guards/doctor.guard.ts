@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 
 
 @Injectable()
-export class ManagementGuard implements CanActivate {
+export class DoctorGuard implements CanActivate {
 
     role: string;
 
@@ -21,11 +21,11 @@ export class ManagementGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-        if (this.authService.isAuth() && this.role === 'MANAGEMENT') {
+        if (this.authService.isAuth() && this.role === 'DOCTOR') {
             console.log(this.role);
             return true;
         } else {
-            this.uiService.displaySnackbarNotification('You are not authorized to visit management index.');
+            this.uiService.displaySnackbarNotification('You are not authorized to visit doctor index.');
             this.router.navigate(['/']);
         }
     }
