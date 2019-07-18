@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild, OnDestroy } from '@angular/core';
-import { AppointmentService } from 'src/app/shared/services/appointment.service';
 import { MatTableDataSource, MatSort, MatPaginator } from '@angular/material';
 import { Appointment } from 'src/app/shared/models/appointment.model';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DatabaseService } from 'src/app/shared/services/database.service';
 
 
 @Component({
@@ -23,13 +23,13 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy
     @ViewChild(MatSort, { static: true }) sort: MatSort;
 
     constructor(
-        private appointmentService: AppointmentService,
+        private dbService: DatabaseService,
         private db: AngularFirestore
     ) { }
 
 
     ngOnInit() {
-        this.appointmentSubscription = this.appointmentService.appointmentsChanged
+        this.appointmentSubscription = this.dbService.appointmentsChanged
             .subscribe(appointments => {
                 this.dataSource.data = appointments;
             }, error => {
@@ -37,7 +37,7 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy
             }
 
             );
-        this.appointmentService.fetchAllAppointments();
+        this.dbService.fetchAllAppointments();
     }
 
     ngAfterViewInit() {

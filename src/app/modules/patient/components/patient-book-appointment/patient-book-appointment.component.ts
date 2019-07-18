@@ -4,8 +4,8 @@ import { NgForm } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import * as _moment from 'moment';
-import { AppointmentService } from 'src/app/shared/services/appointment.service';
 import { Appointment } from 'src/app/shared/models/appointment.model';
+import { DatabaseService } from 'src/app/shared/services/database.service';
 
 @Component({
     selector: 'app-patient-book-appointment',
@@ -26,7 +26,7 @@ export class PatientBookAppointmentComponent implements OnInit {
 
     constructor(
         private _adapter: DateAdapter<any>,
-        private appointmentService: AppointmentService
+        private dbService: DatabaseService
     ) { }
 
     specializations: Specialization[] = [
@@ -58,7 +58,7 @@ export class PatientBookAppointmentComponent implements OnInit {
             date: new Date(`${form.value.date.format('MM.DD.YYYY')} ${form.value.startTime}`),
             type: form.value.type
         };
-        this.appointmentService.addAppointment(appointment);
+        this.dbService.addAppointment(appointment);
         // console.log(form.value.date.format('DD.MM.YYYY'));
         // console.log(form.value.appointmentDate._d.getTime);
     }

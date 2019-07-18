@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, Form, NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
-import { AuthService } from '../../../shared/services/auth.service';
 import { UiService } from 'src/app/shared/services/ui.service';
 import { Subscription } from 'rxjs';
+import { AuthService } from 'src/app/shared/services/auth.service';
 
 @Component({
     selector: 'app-login',

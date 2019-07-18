@@ -15,6 +15,6 @@ export class UiService {
         this.snackBar.open(
             message,
             null,
-            { duration: 4000 });
+            { duration: 2000 });
     }
 }

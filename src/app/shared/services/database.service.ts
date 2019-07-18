@@ -6,7 +6,10 @@ import { Appointment } from '../models/appointment.model';
 import { Subject, Subscription } from 'rxjs';
 
 @Injectable()
-export class AppointmentService {
+export class DatabaseService {
+
+
+    // Init
 
     appointments: Appointment[] = [];
     appointmentsChanged = new Subject<Appointment[]>();
@@ -15,6 +18,9 @@ export class AppointmentService {
     constructor(
         private afs: AngularFirestore,
     ) { }
+
+
+    // Appointments
 
     addAppointment(appointment: Appointment) {
         this.addDataToDatabase(appointment);
@@ -37,6 +43,8 @@ export class AppointmentService {
                 this.appointmentsChanged.next([...this.appointments]);
             }));
     }
+
+    // Others
 
     cancelSubs() {
         this.firebaseSubs.forEach(element => {

@@ -2,14 +2,15 @@ import { NgModule } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
-import { MaterialModule } from '../material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RouterModule } from '@angular/router';
-import { HomePageComponent } from './home-page/home-page.component';
-import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
-import { ToolbarComponent } from './navigation/toolbar/toolbar.component';
-import { SidenavComponent } from './navigation/sidenav/sidenav.component';
-import { AboutComponent } from './about/about.component';
+import { SidenavComponent } from './components/navigation/sidenav/sidenav.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
+import { ToolbarComponent } from './components/navigation/toolbar/toolbar.component';
+import { SidenavListComponent } from './components/navigation/sidenav-list/sidenav-list.component';
+import { AboutComponent } from './components/about/about.component';
+import { MaterialModule } from 'src/app/material.module';
+
 
 
 @NgModule({

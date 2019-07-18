@@ -5,14 +5,15 @@ import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { RouterModule } from '@angular/router';
-import { GeneralModule } from './general/general.module';
 import { AuthService } from './shared/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
-import { AppointmentService } from './shared/services/appointment.service';
 import { UiService } from './shared/services/ui.service';
+import { DatabaseService } from './shared/services/database.service';
+import { GeneralModule } from './modules/general/general.module';
+import { ManagementGuard } from './guards/management.guard';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { UiService } from './shared/services/ui.service';
     providers: [
         UiService,
         AuthService,
-        AppointmentService,
+        DatabaseService,
+        ManagementGuard
     ],
     bootstrap: [AppComponent]
 })

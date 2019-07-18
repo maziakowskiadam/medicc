@@ -55,7 +55,8 @@ export class SignupComponent implements OnInit, OnDestroy {
 
     onCancel(form: NgForm) {
         // this.router.navigate(['/auth/login']);
-        console.log(form.value.dateOfBirth._d);
+        // console.log(form.value.dateOfBirth._d);
+        form.resetForm();
     }
 
     ngOnDestroy(): void {
