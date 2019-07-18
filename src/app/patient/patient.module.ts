@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
         PatientIndexComponent,
         PatientBookAppointmentComponent,
         PatientAccountSettingsComponent,
-        PatientHistoryComponent
+        PatientHistoryComponent,
     ],
     imports: [
         PatientRoutingModule,

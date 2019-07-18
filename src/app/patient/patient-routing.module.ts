@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PatientIndexComponent } from './patient-index/patient-index.component';
+import { ManagementGuard } from '../auth/guards/management.guard';
 
 const routes: Routes = [
     {
         path: 'index',
         component: PatientIndexComponent
-    }
+    },
     // {
-    //     path: 'login',
-    //     component: LoginComponent
+    //     path: 'management',
+    //     component: ManagementIndexComponent,
+    //     canActivate: [ManagementGuard]
     // }
 ];
 

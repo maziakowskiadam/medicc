@@ -60,8 +60,9 @@
                        required>
                 <mat-datepicker-toggle matSuffix
                                        [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker [touchUi]="isHandset"
-                                #picker></mat-datepicker>
+                <mat-datepicker touchUi.xs="true"
+                                #picker
+                                [startAt]=startDate></mat-datepicker>
             </mat-form-field>
 
             <section>
@@ -99,11 +100,14 @@
                       fxLayoutAlign="center center">
         <button mat-raised-button
                 color="warn"
-                (click)="onCancel(f)">Anuluj</button>
+                (click)="onCancel(f)"
+                *ngIf="!isLoading">Anuluj</button>
         <button mat-raised-button
                 color="primary"
                 class="btn-submit"
                 (click)="onSubmit(f)"
-                [disabled]="f.invalid">Zarejestruj się</button>
+                [disabled]="f.invalid"
+                *ngIf="!isLoading">Zarejestruj się</button>
+        <mat-spinner *ngIf="isLoading"></mat-spinner>
     </mat-card-actions>
 </mat-card>

@@ -12,6 +12,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AppointmentService } from './shared/services/appointment.service';
+import { UiService } from './shared/services/ui.service';
 
 
 @NgModule({
@@ -30,8 +31,9 @@ import { AppointmentService } from './shared/services/appointment.service';
         AngularFireAuthModule
     ],
     providers: [
+        UiService,
         AuthService,
-        AppointmentService
+        AppointmentService,
     ],
     bootstrap: [AppComponent]
 })
