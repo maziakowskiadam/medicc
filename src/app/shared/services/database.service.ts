@@ -47,9 +47,11 @@ export class DatabaseService {
     // Others
 
     cancelSubs() {
-        this.firebaseSubs.forEach(element => {
-            element.unsubscribe();
-        });
+        if (this.firebaseSubs) {
+            this.firebaseSubs.forEach(element => {
+                element.unsubscribe();
+            });
+        }
     }
 
     private addDataToDatabase(appointment: Appointment) {

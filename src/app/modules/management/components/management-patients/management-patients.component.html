@@ -1,0 +1,45 @@
+<div fxLayout="row"
+     fxLayoutAlign="center center">
+    <mat-card fxLayout="column"
+              fxFlex="75%">
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <p>Dodaj lekarza</p>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
+                    <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-management-add-doctor></app-management-add-doctor>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <p>Dodaj lekarza</p>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
+                    <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-management-add-doctor></app-management-add-doctor>
+        </mat-expansion-panel>
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <p>Dodaj lekarza</p>
+                </mat-panel-title>
+                <mat-panel-description>
+                    <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
+                    <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+            <app-management-add-doctor></app-management-add-doctor>
+        </mat-expansion-panel>
+    </mat-card>
+</div>

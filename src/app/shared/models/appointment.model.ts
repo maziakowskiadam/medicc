@@ -6,5 +6,5 @@ export interface Appointment {
     doctor?: string;
     result?: string;
     type?: string;
-    state?: 'completed' | 'cancelled' | null;
+    state?: 'completed' | 'cancelled' | 'free' | null;
 }

@@ -39,13 +39,13 @@
                         color="primary"
                         class="btn-login"
                         [disabled]="f.invalid"
-                        *ngIf="!isLoading">Zaloguj</button>
+                        *ngIf="!(isLoading$ | async)">Zaloguj</button>
                 <button mat-button
                         class="btn-register"
                         type="button"
                         routerLink="/auth/signup"
-                        *ngIf="!isLoading">Zarejestruj</button>
-                <mat-spinner *ngIf="isLoading"></mat-spinner>
+                        *ngIf="!(isLoading$ | async)">Zarejestruj</button>
+                <mat-spinner *ngIf="isLoading$ | async"></mat-spinner>
             </div>
         </form>
     </mat-card-content>

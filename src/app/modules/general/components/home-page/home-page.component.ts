@@ -18,7 +18,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.authService.role.subscribe(r => {
             if (r === 'PATIENT_UNAUTHORIZED') {
                 this.isUnauthorized = true;
-                console.log(r);
             }
         });
     }

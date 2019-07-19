@@ -1,36 +1,47 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, Validators, Form, NgForm } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Store } from '@ngrx/store';
+
 import { UiService } from 'src/app/shared/services/ui.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { AuthService } from 'src/app/shared/services/auth.service';
+import * as fromAppReducer from '../../../../shared/store/reducers/app.reducer';
+import { map } from 'rxjs/operators';
+
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit {
 
-    isLoading = false;
+    isLoading$: Observable<boolean>;
     loadingSubscription: Subscription;
 
 
     constructor(
         private authService: AuthService,
-        private uiService: UiService) { }
+        private uiService: UiService,
+        private store: Store<fromAppReducer.State>
+    ) { }
 
     ngOnInit() {
-        this.loadingSubscription = this.uiService.loadingStateChanged.subscribe(isLoading => {
-            this.isLoading = isLoading;
-        });
+        this.isLoading$ = this.store.select(fromAppReducer.getIsLoading);
+
+        // this.loadingSubscription = this.uiService.loadingStateChanged.subscribe(isLoading => {
+        //     this.isLoading = isLoading;
+        // });
     }
 
     onSubmit(form: NgForm) {
         this.authService.login({ email: form.value.email, password: form.value.password });
     }
 
-    ngOnDestroy(): void {
-        this.loadingSubscription.unsubscribe();
-    }
+    // ngOnDestroy(): void {
+    //     if (this.loadingSubscription) {
+    //         this.loadingSubscription.unsubscribe();
+    //     }
+    // }
 
 }

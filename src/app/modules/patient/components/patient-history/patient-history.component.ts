@@ -54,6 +54,8 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy
     }
 
     ngOnDestroy() {
-        this.appointmentSubscription.unsubscribe();
+        if (this.appointmentSubscription) {
+            this.appointmentSubscription.unsubscribe();
+        }
     }
 }

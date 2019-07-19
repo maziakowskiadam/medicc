@@ -22,7 +22,6 @@ export class DoctorGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         if (this.authService.isAuth() && this.role === 'DOCTOR') {
-            console.log(this.role);
             return true;
         } else {
             this.uiService.displaySnackbarNotification('You are not authorized to visit doctor index.');

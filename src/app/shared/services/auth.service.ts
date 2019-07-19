@@ -7,7 +7,9 @@ import { UiService } from './ui.service';
 import { DatabaseService } from './database.service';
 import { AuthData } from 'src/app/modules/auth/models/auth-data.model';
 import { User } from '../models/user.model';
-
+import { Store } from '@ngrx/store';
+import * as fromAppReducer from '../store/reducers/app.reducer';
+import * as UI from '../store/actions/ui.actions';
 
 @Injectable()
 export class AuthService {
@@ -23,7 +25,8 @@ export class AuthService {
         private afAuth: AngularFireAuth,
         private dbService: DatabaseService,
         private uiService: UiService,
-        private afs: AngularFirestore
+        private afs: AngularFirestore,
+        private store: Store<fromAppReducer.State>,
     ) { }
 
     initAuthListener() {
@@ -42,35 +45,46 @@ export class AuthService {
                     console.log(this.role.value);
                 }
             }
+
         );
     }
 
-    registerUser(authData: AuthData) {
-        this.uiService.loadingStateChanged.next(true);
+    registerPatientUnauthorized(authData: AuthData) {
+        // this.uiService.loadingStateChanged.next(true);
+
+        this.store.dispatch(new UI.StartLoading());
         this.afAuth.auth.createUserWithEmailAndPassword(
             authData.email,
             authData.password)
             .then(result => {
-                this.uiService.loadingStateChanged.next(false);
+                // this.uiService.loadingStateChanged.next(false);
+                this.store.dispatch(new UI.StopLoading());
                 this.registerPatientInDatabase(result.user.email, result.user.uid);
                 this.router.navigate(['patient/index']);
             }).catch(error => {
-                this.uiService.loadingStateChanged.next(false);
+                // this.uiService.loadingStateChanged.next(false);
+                this.store.dispatch(new UI.StopLoading());
                 this.uiService.displaySnackbarNotification(error.message);
             });
     }
 
 
     login(authData: AuthData) {
-        this.uiService.loadingStateChanged.next(true);
+        // this.uiService.loadingStateChanged.next(true);
+
+        this.store.dispatch(new UI.StartLoading());
         this.afAuth.auth.signInWithEmailAndPassword(
             authData.email,
             authData.password)
             .then(result => {
-                this.uiService.loadingStateChanged.next(false);
+                // this.uiService.loadingStateChanged.next(false);
+
+                this.store.dispatch(new UI.StopLoading());
                 this.checkRoleAndNavigate(result.user.uid);
             }).catch(error => {
-                this.uiService.loadingStateChanged.next(false);
+                // this.uiService.loadingStateChanged.next(false);
+
+                this.store.dispatch(new UI.StopLoading());
                 this.uiService.displaySnackbarNotification(error.message);
             });
     }
@@ -108,24 +122,32 @@ export class AuthService {
             if (u.roles.management) {
                 this.role.next('MANAGEMENT');
                 this.router.navigate(['management/index']);
+                console.log(this.role.value, uid);
             } else if (u.roles.patient) {
                 this.role.next('PATIENT');
                 this.router.navigate(['patient/index']);
+                console.log(this.role.value, uid);
             } else if (u.roles.doctor) {
                 this.role.next('DOCTOR');
                 this.router.navigate(['doctor/index']);
+                console.log(this.role.value, uid);
             } else if (u.roles.patientUnauthorized) {
                 this.role.next('PATIENT_UNAUTHORIZED');
                 this.router.navigate(['/']);
+                console.log(this.role.value, uid);
             }
-        }, error => { }
+        }, error => {
+            console.log(error);
+        }
         ));
     }
 
     cancelAuthSubs() {
-        this.authSubs.forEach(sub => {
-            sub.unsubscribe();
-        });
+        if (this.authSubs) {
+            this.authSubs.forEach(sub => {
+                sub.unsubscribe();
+            });
+        }
     }
 
 }

@@ -1,41 +1,45 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { StoreModule } from '@ngrx/store';
+
 import { AppComponent } from './app.component';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
-import { RouterModule } from '@angular/router';
 import { AuthService } from './shared/services/auth.service';
 import { environment } from 'src/environments/environment';
-import { AngularFireModule } from '@angular/fire';
-import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
 import { UiService } from './shared/services/ui.service';
 import { DatabaseService } from './shared/services/database.service';
 import { GeneralModule } from './modules/general/general.module';
-import { ManagementGuard } from './guards/management.guard';
-// import localeFr from '@angular/common/locales/pl';
+import { AuthModule } from './modules/auth/auth.module';
+import { SharedModule } from './shared/shared.module';
+import { reducers } from './shared/store/reducers/app.reducer';
+
 
 @NgModule({
     declarations: [
         AppComponent,
     ],
     imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        MaterialModule,
-        AppRoutingModule,
-        RouterModule,
-        GeneralModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule,
-        AngularFireAuthModule
+        AppRoutingModule,
+        AuthModule,
+        BrowserModule,
+        BrowserAnimationsModule,
+        GeneralModule,
+        MaterialModule,
+        RouterModule,
+        SharedModule,
+        StoreModule.forRoot(reducers)
     ],
     providers: [
-        UiService,
         AuthService,
         DatabaseService,
-        ManagementGuard
+        UiService,
     ],
     bootstrap: [AppComponent]
 })
