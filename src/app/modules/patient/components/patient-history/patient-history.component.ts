@@ -34,9 +34,7 @@ export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy
                 this.dataSource.data = appointments;
             }, error => {
                 console.log(error);
-            }
-
-            );
+            });
         this.dbService.fetchAllAppointments();
     }
 

@@ -2,14 +2,18 @@ import { Subject, Observable, Subscription, BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Store } from '@ngrx/store';
 import { AngularFirestore } from '@angular/fire/firestore';
+
 import { UiService } from './ui.service';
 import { DatabaseService } from './database.service';
 import { AuthData } from 'src/app/modules/auth/models/auth-data.model';
 import { User } from '../models/user.model';
-import { Store } from '@ngrx/store';
 import * as fromAppReducer from '../store/reducers/app.reducer';
 import * as UI from '../store/actions/ui.actions';
+import { Doctor } from '../models/doctor.model';
+import { Patient } from '../models/patient.model';
+
 
 @Injectable()
 export class AuthService {
@@ -29,6 +33,7 @@ export class AuthService {
         private store: Store<fromAppReducer.State>,
     ) { }
 
+
     initAuthListener() {
         this.afAuth.authState.subscribe(
             user => {
@@ -45,24 +50,47 @@ export class AuthService {
                     console.log(this.role.value);
                 }
             }
-
         );
     }
 
     registerPatientUnauthorized(authData: AuthData) {
-        // this.uiService.loadingStateChanged.next(true);
 
         this.store.dispatch(new UI.StartLoading());
         this.afAuth.auth.createUserWithEmailAndPassword(
             authData.email,
             authData.password)
             .then(result => {
-                // this.uiService.loadingStateChanged.next(false);
                 this.store.dispatch(new UI.StopLoading());
-                this.registerPatientInDatabase(result.user.email, result.user.uid);
-                this.router.navigate(['patient/index']);
+                this.dbService.addPatientUnauthorizedAsUser(result.user.email, result.user.uid);
             }).catch(error => {
-                // this.uiService.loadingStateChanged.next(false);
+                this.store.dispatch(new UI.StopLoading());
+                this.uiService.displaySnackbarNotification(error.message);
+            });
+    }
+
+    registerNewDoctor(authData: AuthData, data: Doctor) {
+        this.store.dispatch(new UI.StartLoading());
+        this.afAuth.auth.createUserWithEmailAndPassword(
+            authData.email,
+            authData.password)
+            .then(result => {
+                this.store.dispatch(new UI.StopLoading());
+                this.dbService.addDoctorAsUser(result.user.email, result.user.uid);
+                this.dbService.addDoctorToDb(result.user.uid, data);
+            }).catch(error => {
+                this.store.dispatch(new UI.StopLoading());
+                this.uiService.displaySnackbarNotification(error.message);
+            });
+    }
+
+    registerNewPatient(authData: AuthData, data: Patient) {
+        this.store.dispatch(new UI.StartLoading());
+        this.afAuth.auth.createUserWithEmailAndPassword(authData.email, authData.password)
+            .then(result => {
+                this.store.dispatch(new UI.StopLoading());
+                this.dbService.addPatientAsUser(result.user.email, result.user.uid);
+                this.dbService.addPatientToDb(result.user.uid, data);
+            }).catch(error => {
                 this.store.dispatch(new UI.StopLoading());
                 this.uiService.displaySnackbarNotification(error.message);
             });
@@ -70,20 +98,15 @@ export class AuthService {
 
 
     login(authData: AuthData) {
-        // this.uiService.loadingStateChanged.next(true);
 
         this.store.dispatch(new UI.StartLoading());
         this.afAuth.auth.signInWithEmailAndPassword(
             authData.email,
             authData.password)
             .then(result => {
-                // this.uiService.loadingStateChanged.next(false);
-
                 this.store.dispatch(new UI.StopLoading());
                 this.checkRoleAndNavigate(result.user.uid);
             }).catch(error => {
-                // this.uiService.loadingStateChanged.next(false);
-
                 this.store.dispatch(new UI.StopLoading());
                 this.uiService.displaySnackbarNotification(error.message);
             });
@@ -99,22 +122,8 @@ export class AuthService {
         this.uiService.displaySnackbarNotification('Wylogowano');
     }
 
-
     isAuth() {
         return this.isAuthenticated;
-    }
-
-    registerPatientInDatabase(email: string, uid: string) {
-        this.afs.collection('users').doc(uid).set({
-            email,
-            uid,
-            roles: {
-                management: false,
-                doctor: false,
-                patient: false,
-                patientUnauthorized: true
-            }
-        });
     }
 
     checkRoleAndNavigate(uid: string) {

@@ -7,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManagementPatientsComponent implements OnInit {
 
-    panelOpenState = false;
+    panelAppointPatientOpenState = false;
+    panelConfirmPatientOpenState = false;
+    panelAddPatientAccountOpenState = false;
+
 
     constructor() { }
 

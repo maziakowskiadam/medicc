@@ -51,20 +51,50 @@
         </mat-form-field>
 
         <mat-form-field>
+            <input matInput
+                   [matDatepicker]="picker"
+                   placeholder="Data urodzenia"
+                   ngModel
+                   name="dateOfBirth"
+                   required>
+            <mat-datepicker-toggle matSuffix
+                                   [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi.xs="true"
+                            #picker
+                            [startAt]=startDate></mat-datepicker>
+        </mat-form-field>
+
+        <section>
+            <label>Płeć:</label>
+            <mat-radio-group [(ngModel)]="genderPosition"
+                             name="gender"
+                             ngModel>
+                <mat-radio-button class="example-margin"
+                                  value="M">Mężczyzna</mat-radio-button>
+                <mat-radio-button class="example-margin"
+                                  value="F">Kobieta</mat-radio-button>
+            </mat-radio-group>
+        </section>
+
+        <mat-form-field>
             <input type="text"
                    matInput
                    ngModel
-                   placeholder="Specjalizacja"
-                   name="specialization"
+                   placeholder="PESEL"
+                   name="pesel"
+                   #peselInput
+                   maxlength=11
                    required>
+            <mat-hint align="end">{{peselInput.value.length}} / 11</mat-hint>
         </mat-form-field>
+
         <div class="button-container">
             <button mat-raised-button
                     color="primary"
                     class="btn-submit"
                     (click)="onSubmit(f)"
                     [disabled]="f.invalid"
-                    *ngIf="!isLoading">Dodaj lekarza</button>
+                    *ngIf="!isLoading">Dodaj pacjenta</button>
         </div>
     </form>
 </div>

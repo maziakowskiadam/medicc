@@ -11,6 +11,9 @@ import { ManagementPatientsComponent } from './components/management-patients/ma
 import { ManagementDoctorsComponent } from './components/management-doctors/management-doctors.component';
 import { ManagementAdministrationComponent } from './components/management-administration/management-administration.component';
 import { ManagementAddDoctorComponent } from './components/management-doctors/management-add-doctor/management-add-doctor.component';
+import { ManagementAddAppointmentComponent } from './components/management-administration/management-add-appointment/management-add-appointment.component';
+import { ManagementAddPatientComponent } from './components/management-patients/management-add-patient/management-add-patient.component';
+import { ManagementConfirmPatientComponent } from './components/management-patients/management-confirm-patient/management-confirm-patient.component';
 
 @NgModule({
     declarations: [
@@ -18,7 +21,10 @@ import { ManagementAddDoctorComponent } from './components/management-doctors/ma
         ManagementPatientsComponent,
         ManagementDoctorsComponent,
         ManagementAdministrationComponent,
-        ManagementAddDoctorComponent
+        ManagementAddDoctorComponent,
+        ManagementAddAppointmentComponent,
+        ManagementAddPatientComponent,
+        ManagementConfirmPatientComponent
     ],
     imports: [
         SharedModule,

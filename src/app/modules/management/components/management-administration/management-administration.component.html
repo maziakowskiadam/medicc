@@ -1,1 +1,24 @@
-<p>management-administration works!</p>
+<div fxHide.xs
+     class="container"
+     fxLayout="row"
+     fxLayoutAlign="center center">
+    <mat-card fxLayout="row"
+              fxLayoutAlign="center center"
+              fxFlex="90%">
+        <mat-accordion fxLayout="column"
+                       fxFlex="90%">
+            <mat-expansion-panel (opened)="panelAddAppointmentOpenState = true"
+                                 (closed)="panelAddAppointmentOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <p>Dodaj terminy wizyt</p>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <p *ngIf="panelAddAppointmentOpenState">Dodaj nowe terminy wizyt dla lekarza</p>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-management-add-appointment></app-management-add-appointment>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-card>
+</div>

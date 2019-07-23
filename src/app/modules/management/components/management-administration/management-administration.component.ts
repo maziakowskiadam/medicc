@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-management-administration',
-  templateUrl: './management-administration.component.html',
-  styleUrls: ['./management-administration.component.scss']
+    selector: 'app-management-administration',
+    templateUrl: './management-administration.component.html',
+    styleUrls: ['./management-administration.component.scss']
 })
 export class ManagementAdministrationComponent implements OnInit {
 
-  constructor() { }
+    panelAddAppointmentOpenState = false;
+    panelAddDoctorOpenState = false;
 
-  ngOnInit() {
-  }
+    constructor() { }
+
+    ngOnInit() {
+    }
 
 }

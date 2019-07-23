@@ -1,1 +1,28 @@
-<p>management-doctors works!</p>
+<div fxHide.xs
+     class="container"
+     fxLayout="row"
+     fxLayoutAlign="center center">
+    <mat-card fxLayout="row"
+              fxLayoutAlign="center center"
+              fxFlex="90%">
+        <mat-accordion fxLayout="column"
+                       fxFlex="90%">
+            <mat-expansion-panel (opened)="panelAddDoctorOpenState = true"
+                                 (closed)="panelAddDoctorOpenState = false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        <p>Dodaj lekarza</p>
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        <!-- <p *ngIf="!panelAppointPatientOpenState">Dodaj nowego lekarza do systemu</p> -->
+                        <p *ngIf="panelAddDoctorOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <app-management-add-doctor></app-management-add-doctor>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </mat-card>
+</div>
+<div fxHide.gt-xs>
+    Urządzenie mobilne
+</div>

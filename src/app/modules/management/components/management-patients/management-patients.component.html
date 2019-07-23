@@ -1,50 +1,50 @@
-<div class="container"
+<div fxHide.xs
+     class="container"
      fxLayout="row"
      fxLayoutAlign="center center">
     <mat-card fxLayout="row"
               fxLayoutAlign="center center"
-              fxFlex="75%">
+              fxFlex="90%">
         <mat-accordion fxLayout="column"
                        fxFlex="90%">
-            <mat-expansion-panel (opened)="panelOpenState = true"
-                                 (closed)="panelOpenState = false">
+            <!-- <mat-expansion-panel (opened)="panelAppointPatientOpenState = true"
+                                 (closed)="panelAppointPatientOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         <p>Umów pacjenta</p>
                     </mat-panel-title>
                     <mat-panel-description>
-                        <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
-                        <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                        <p *ngIf="panelAppointPatientOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-management-add-doctor></app-management-add-doctor>
-            </mat-expansion-panel>
-            <mat-expansion-panel (opened)="panelOpenState = true"
-                                 (closed)="panelOpenState = false">
+            </mat-expansion-panel> -->
+            <mat-expansion-panel (opened)="panelConfirmPatientOpenState = true"
+                                 (closed)="panelConfirmPatientOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <p>Potwierdź konto nowego pacjenta</p>
+                        <p>Potwierdź konto pacjenta</p>
                     </mat-panel-title>
                     <mat-panel-description>
-                        <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
-                        <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                        <p *ngIf="panelConfirmPatientOpenState">Wybierz pacjenta z listy</p>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-management-add-doctor></app-management-add-doctor>
+                <app-management-confirm-patient></app-management-confirm-patient>
             </mat-expansion-panel>
-            <mat-expansion-panel (opened)="panelOpenState = true"
-                                 (closed)="panelOpenState = false">
+            <mat-expansion-panel (opened)="panelAddPatientAccountOpenState = true"
+                                 (closed)="panelAddPatientAccountOpenState = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        <p>Dodaj lekarza</p>
+                        <p>Dodaj pacjenta</p>
                     </mat-panel-title>
                     <mat-panel-description>
-                        <p *ngIf="!panelOpenState">Dodaj nowego lekarza do systemu</p>
-                        <p *ngIf="panelOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
+                        <p *ngIf="panelAddPatientAccountOpenState">Wpisz dane logowania i podstawowe dane osobowe</p>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
-                <app-management-add-doctor></app-management-add-doctor>
+                <app-management-add-patient></app-management-add-patient>
             </mat-expansion-panel>
         </mat-accordion>
     </mat-card>
+</div>
+<div fxHide.gt-xs>
+    Urządzenie mobilne
 </div>

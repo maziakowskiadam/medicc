@@ -2,14 +2,16 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators, NgForm } from '@angular/forms';
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import * as _moment from 'moment';
 import { Router } from '@angular/router';
+
 import { AuthService } from 'src/app/shared/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { UiService } from 'src/app/shared/services/ui.service';
+import * as fromAppReducer from '../../../../shared/store/reducers/app.reducer';
+import * as _moment from 'moment';
+import { Store } from '@ngrx/store';
 
 
-const moment = _moment;
 
 @Component({
     selector: 'app-signup',
@@ -31,20 +33,21 @@ export class SignupComponent implements OnInit, OnDestroy {
     loadingSubscription: Subscription;
     startDate = new Date(1995, 11, 8);
     date = new FormControl(this.startDate);
+    isLoading$: Observable<boolean>;
+
 
     constructor(
         private adapter: DateAdapter<any>,
         private authService: AuthService,
         private uiService: UiService,
-        private router: Router) {
+        private router: Router,
+        private store: Store<fromAppReducer.State>
+    ) {
     }
 
     ngOnInit() {
         this.adapter.setLocale('pl');
-        this.loadingSubscription = this.uiService.loadingStateChanged.subscribe(isLoading => {
-            this.isLoading = isLoading;
-        });
-        console.log(this.startDate.toISOString());
+        this.isLoading$ = this.store.select(fromAppReducer.getIsLoading);
     }
 
     onSubmit(form: NgForm) {
@@ -54,9 +57,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     }
 
     onCancel(form: NgForm) {
-        // this.router.navigate(['/auth/login']);
-        // console.log(form.value.dateOfBirth._d);
-        form.resetForm();
+        this.router.navigate(['/auth/login']);
     }
 
     ngOnDestroy(): void {
