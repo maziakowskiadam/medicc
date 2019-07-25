@@ -20,7 +20,8 @@ import {
     MatSortModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatStepperModule
+    MatStepperModule,
+    MatDialogModule
 
 } from '@angular/material';
 
@@ -47,7 +48,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatSortModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
-        MatStepperModule
+        MatStepperModule,
+        MatDialogModule
 
     ],
     exports: [
@@ -71,7 +73,8 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
         MatSortModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
-        MatStepperModule
+        MatStepperModule,
+        MatDialogModule
 
     ],
 })

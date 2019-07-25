@@ -14,6 +14,7 @@ import { ManagementAddDoctorComponent } from './components/management-doctors/ma
 import { ManagementAddAppointmentComponent } from './components/management-administration/management-add-appointment/management-add-appointment.component';
 import { ManagementAddPatientComponent } from './components/management-patients/management-add-patient/management-add-patient.component';
 import { ManagementConfirmPatientComponent } from './components/management-patients/management-confirm-patient/management-confirm-patient.component';
+import { ConfirmPatientDialogComponent } from './components/management-patients/management-confirm-patient/confirm-patient-dialog.component';
 
 @NgModule({
     declarations: [
@@ -24,12 +25,16 @@ import { ManagementConfirmPatientComponent } from './components/management-patie
         ManagementAddDoctorComponent,
         ManagementAddAppointmentComponent,
         ManagementAddPatientComponent,
-        ManagementConfirmPatientComponent
+        ManagementConfirmPatientComponent,
+        ConfirmPatientDialogComponent
     ],
     imports: [
         SharedModule,
         RouterModule,
         ManagementRoutingModule,
+    ],
+    entryComponents: [
+        ConfirmPatientDialogComponent
     ]
 })
 export class ManagementModule { }

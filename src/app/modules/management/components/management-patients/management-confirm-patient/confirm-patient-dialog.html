@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>Potwierdzasz aktywację konta pacjenta?</h2>
+<div mat-dialog-content>
+    <p>Imię i nazwisko: <b>{{ data.patient.firstName }} {{ data.patient.lastName }}</b></p>
+    <p>PESEL: <b>{{ data.patient.pesel }}</b></p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button
+            [mat-dialog-close]="data.patient.UUID">TAK</button>
+    <button mat-button>NIE</button>
+</div>
