@@ -53,7 +53,7 @@ export class AuthService {
         );
     }
 
-    registerPatientUnauthorized(authData: AuthData) {
+    registerPatientUnauthorized(authData: AuthData, data: Patient) {
 
         this.store.dispatch(new UI.StartLoading());
         this.afAuth.auth.createUserWithEmailAndPassword(
@@ -62,6 +62,7 @@ export class AuthService {
             .then(result => {
                 this.store.dispatch(new UI.StopLoading());
                 this.dbService.addPatientUnauthorizedAsUser(result.user.email, result.user.uid);
+                this.dbService.addPatientUnauthorizedToDb(result.user.uid, data);
             }).catch(error => {
                 this.store.dispatch(new UI.StopLoading());
                 this.uiService.displaySnackbarNotification(error.message);

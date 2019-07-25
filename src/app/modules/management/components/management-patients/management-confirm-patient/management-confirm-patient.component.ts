@@ -14,8 +14,8 @@ export class ManagementConfirmPatientComponent implements OnInit, AfterViewInit,
 
     dataSource = new MatTableDataSource<User>();
     displayedColumns = ['name', 'pesel', 'actions'];
-    unauthorizedPatientUsers: User[] = [];
-    unauthorizedPatientUsersSub: Subscription;
+    unauthorizedPatients: User[] = [];
+    unauthorizedPatientsSub: Subscription;
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -25,14 +25,14 @@ export class ManagementConfirmPatientComponent implements OnInit, AfterViewInit,
     ) { }
 
     ngOnInit() {
-        this.unauthorizedPatientUsersSub = this.dbService.unauthorizedPatientUsersChanged
+        this.unauthorizedPatientsSub = this.dbService.unauthorizedPatientChanged
             .subscribe(users => {
-                this.dataSource.data = users.filter(r => r.roles.patientUnauthorized);
-                console.log(this.dataSource.data);
+                this.dataSource.data = users;
+                // console.log(this.dataSource.data);
             }, error => {
                 console.log(error);
             });
-        this.dbService.getUnauthorizedPatientUsers();
+        this.dbService.getUnauthorizedPatients();
     }
 
     ngAfterViewInit() {
@@ -48,9 +48,13 @@ export class ManagementConfirmPatientComponent implements OnInit, AfterViewInit,
         }
     }
 
+    onActivateClicked(uid: string) {
+        this.dbService.authorizePatient(uid);
+    }
+
     ngOnDestroy() {
-        if (this.unauthorizedPatientUsersSub) {
-            this.unauthorizedPatientUsersSub.unsubscribe();
+        if (this.unauthorizedPatientsSub) {
+            this.unauthorizedPatientsSub.unsubscribe();
         }
     }
 }

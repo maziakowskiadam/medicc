@@ -13,19 +13,20 @@
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef
                              mat-sort-header>Imię i nazwisko</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.email }}</mat-cell>
+            <mat-cell *matCellDef="let element">{{ element.firstName }} {{ element.lastName }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="pesel">
             <mat-header-cell *matHeaderCellDef>PESEL</mat-header-cell>
-            <mat-cell *matCellDef="let element">{{ element.email }}</mat-cell>
+            <mat-cell *matCellDef="let element">{{ element.pesel }}</mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="actions">
             <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
             <mat-cell *matCellDef="let element">
                 <button mat-flat-button
-                        color="primary">Szczegóły</button>
+                        color="primary"
+                        (click)="onActivateClicked(element.UUID)">Aktywuj</button>
             </mat-cell>
         </ng-container>
 

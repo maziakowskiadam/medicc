@@ -50,9 +50,18 @@ export class SignupComponent implements OnInit, OnDestroy {
         this.isLoading$ = this.store.select(fromAppReducer.getIsLoading);
     }
 
-    onSubmit(form: NgForm) {
+    onSubmit(f: NgForm) {
         this.authService.registerPatientUnauthorized(
-            { email: form.value.email, password: form.value.password }
+            { email: f.value.email, password: f.value.password },
+            {
+                email: f.value.email,
+                firstName: f.value.firstName,
+                lastName: f.value.lastName,
+                pesel: f.value.pesel,
+                dateOfBirth: f.value.dateOfBirth._d,
+                gender: f.value.gender
+            }
+
         );
     }
 

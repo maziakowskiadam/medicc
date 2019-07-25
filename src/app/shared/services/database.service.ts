@@ -15,9 +15,9 @@ export class DatabaseService {
     // Init
 
     appointments: Appointment[] = [];
-    unauthPatientUsers: User[] = [];
+    unauthPatients: User[] = [];
     appointmentsChanged = new Subject<Appointment[]>();
-    unauthorizedPatientUsersChanged = new Subject<User[]>();
+    unauthorizedPatientChanged = new Subject<User[]>();
     firebaseSubs: Subscription[] = [];
 
     constructor(
@@ -27,42 +27,57 @@ export class DatabaseService {
 
     // Patients
 
-    getUnauthorizedPatientUsers() {
-        this.firebaseSubs.push(this.afs.collection('users')
-            .snapshotChanges()
-            .pipe(
-                map(documentArray => {
-                    return documentArray.map(doc => {
-                        return {
-                            ...doc.payload.doc.data()
-                        };
+    authorizePatient(uid: string) {
+        this.afs.collection('users')
+            .doc(uid)
+            .update(
+                {
+                    roles: {
+                        patient: true,
+                        patientUnauthorized: false
+                    }
+                });
+
+        this.firebaseSubs.push(
+            this.afs.collection('unauthorizedPatients', ref => ref.where('UUID', '==', uid))
+                .get()
+                .subscribe(snapshot => {
+                    snapshot.forEach(doc => {
+                        this.afs.collection('patients').add(doc.data());
+                        doc.ref.delete();
                     });
-                }))
-            .subscribe((users: User[]) => {
-                this.unauthPatientUsers = users;
-                this.unauthorizedPatientUsersChanged.next([...this.unauthPatientUsers]);
-            }));
+                }));
     }
 
-    // getUnauthorizedPatients() {
-    //     let array = [];
-    //     this.afs.collection('users').valueChanges()
-    //         .subscribe(r => {
-    //             array = r.filter((a: User) => a.roles.patientUnauthorized);
-    //             this.unauthorizedPatients.next([...array]);
-    //         });
-    // }
+    getUnauthorizedPatients() {
+        this.firebaseSubs.push(this.afs.collection('unauthorizedPatients')
+            .valueChanges()
+            .subscribe((r: User[]) => {
+                this.unauthPatients = r;
+                this.unauthorizedPatientChanged.next([...this.unauthPatients]);
+            }));
+    }
 
     addPatientUnauthorizedAsUser(email: string, uid: string) {
         this.afs.collection('users').doc(uid).set({
             email,
             uid,
             roles: {
-                management: false,
-                doctor: false,
                 patient: false,
                 patientUnauthorized: true
             }
+        });
+    }
+
+    addPatientUnauthorizedToDb(uid: string, data: Patient) {
+        this.afs.collection('unauthorizedPatients').add({
+            UUID: uid,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            pesel: data.pesel,
+            dateOfBirth: data.dateOfBirth,
+            gender: data.gender,
         });
     }
 
@@ -71,8 +86,6 @@ export class DatabaseService {
             email,
             uid,
             roles: {
-                management: false,
-                doctor: false,
                 patient: true,
                 patientUnauthorized: false
             }
@@ -133,8 +146,6 @@ export class DatabaseService {
             roles: {
                 management: false,
                 doctor: true,
-                patient: false,
-                patientUnauthorized: false
             }
         });
     }
