@@ -14,6 +14,7 @@ export class ConfirmPatientDialogComponent {
         public dialogRef: MatDialogRef<ConfirmPatientDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: Patient,
     ) {
+        console.log(this.data);
     }
 
     onNoClick(): void {

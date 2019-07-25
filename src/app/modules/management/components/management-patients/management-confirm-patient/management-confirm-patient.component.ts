@@ -59,10 +59,12 @@ export class ManagementConfirmPatientComponent implements OnInit, AfterViewInit,
     openDialog(patient: Patient): void {
         const dialogRef = this.dialog.open(ConfirmPatientDialogComponent, {
             width: '400px',
-            data: { patient }
+            data: { ...patient }
         });
 
-        dialogRef.afterClosed().subscribe(result => { this.dbService.authorizePatient(result); });
+        dialogRef.afterClosed().subscribe(result => {
+            // this.dbService.authorizePatient(result);
+        });
     }
 
     ngOnDestroy() {
