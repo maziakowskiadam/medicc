@@ -11,7 +11,7 @@
                                     ngModel
                                     name="doctor">
                             <mat-option *ngFor="let doctor of doctors | async"
-                                        [value]="doctor.uuid">{{ doctor.firstName }} {{ doctor.lastName }}</mat-option>
+                                        [value]="doctor.UUID">{{ doctor.firstName }} {{ doctor.lastName }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
@@ -84,7 +84,7 @@
                         type="button"
                         class="btn-submit"
                         color="primary">
-                    <mat-icon>arrow_forward_ios</mat-icon>
+                    <mat-icon (click)="summarizeForm(f)">arrow_forward_ios</mat-icon>
                 </button>
             </div>
         </mat-step>
@@ -102,11 +102,11 @@
                 <div fxLayout="column"
                      fxLayoutAlign="center center">
                     <section class="mat-typography">
-                        Lekarz: <b>Jan Kowalski</b><br>
-                        Data: <b>13.08.2019</b><br>
-                        Godzina startu dyżuru: <b>09:00</b><br>
-                        Godzina zakończenia dyżuru: <b>13:00</b><br>
-                        Ilość wizyt: <b>10</b><br>
+                        Lekarz: <b>{{ f.value.doctor }}</b><br>
+                        Data: <b>{{ f.value.appointmentDate | date:'dd.MM.yyyy'}}</b><br>
+                        Godzina startu dyżuru: <b>{{ f.value.startTime }}</b><br>
+                        Godzina zakończenia dyżuru: <b>{{ endTime }}</b><br>
+                        Ilość wizyt: <b>{{ f.value.numberOfAppointments }}</b><br>
                     </section>
                 </div>
 

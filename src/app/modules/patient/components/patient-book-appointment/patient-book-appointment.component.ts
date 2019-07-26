@@ -54,7 +54,7 @@ export class PatientBookAppointmentComponent implements OnInit {
     onSubmit(form: NgForm) {
         const appointment: Appointment = {
             patient: form.value.patient,
-            doctor: form.value.doctor,
+            doctorUid: form.value.doctor,
             date: new Date(`${form.value.date.format('MM.DD.YYYY')} ${form.value.startTime}`),
             type: form.value.type
         };

@@ -129,6 +129,11 @@ export class DatabaseService {
             }));
     }
 
+    addFreeAppointments(appArray: Appointment[]) {
+        appArray.forEach(app => {
+            this.afs.collection('appointments').add(app);
+        });
+    }
 
     // Doctors
 

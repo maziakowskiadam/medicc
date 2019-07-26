@@ -7,6 +7,10 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { DatabaseService } from 'src/app/shared/services/database.service';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
+import { Moment } from 'moment';
+import { Appointment } from 'src/app/shared/models/appointment.model';
+import { Router } from '@angular/router';
+import { UiService } from 'src/app/shared/services/ui.service';
 
 
 
@@ -30,23 +34,56 @@ export class ManagementAddAppointmentComponent implements OnInit {
     isLinear = false;
     firstFormGroup: FormGroup;
     secondFormGroup: FormGroup;
+    endTime: string;
 
     constructor(
         private adapter: DateAdapter<any>,
         private dbService: DatabaseService,
+        private uiService: UiService
     ) {
 
     }
-
-
 
     ngOnInit() {
         this.adapter.setLocale('pl');
         this.doctors = this.dbService.getAllDoctors();
     }
 
-    onSubmit(form: NgForm) {
-        console.log(form.value);
+    // TODO Add hours to date and then add minutes
+
+    summarizeForm(f: NgForm) {
+        const time: string[] = (f.value.startTime).split(':');
+        const m = f.value.appointmentDate._i;
+        const fullAppointmentDate = new Date(m.year, m.month, m.date, +time[0], +time[1]);
+        const momentDate = moment(fullAppointmentDate).add(f.value.appointmentLength * f.value.numberOfAppointments, 'minutes');
+        this.endTime = momentDate.format('HH:mm');
+    }
+
+    onSubmit(f: NgForm) {
+        this.dbService.addFreeAppointments(this.addAppointments(f));
+        f.resetForm();
+        this.endTime = '';
+        this.uiService.displaySnackbarNotification(`Added ${f.value.numberOfAppointments} to database`);
+    }
+
+    addAppointments(f: NgForm): Appointment[] {
+        const appointmentArray: Appointment[] = [];
+
+        for (let i = 0; i < f.value.numberOfAppointments; i++) {
+            const time: string[] = (f.value.startTime).split(':');
+            const m = f.value.appointmentDate._i;
+            const fullAppointmentDate = new Date(m.year, m.month, m.date, +time[0], +time[1]);
+            const start = moment(fullAppointmentDate).add(f.value.appointmentLength * i, 'minutes').format('HH:mm');
+
+            appointmentArray.push({
+                doctorUid: f.value.doctor,
+                date: f.value.appointmentDate.toDate(),
+                state: 'free',
+                timeStart: start,
+            });
+        }
+
+        return appointmentArray;
     }
 
 }

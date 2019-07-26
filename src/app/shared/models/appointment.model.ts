@@ -1,10 +1,10 @@
 export interface Appointment {
     id?: string;
     date?: Date;
-    time?: string;
+    timeStart?: string;
     patient?: string;
-    doctor?: string;
+    doctorUid?: string;
     result?: string;
     type?: string;
-    state?: 'completed' | 'cancelled' | 'free' | null;
+    state?: 'completed' | 'cancelled' | 'free' | 'booked' | null;
 }
