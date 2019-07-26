@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import * as _moment from 'moment';
-import { Appointment } from 'src/app/shared/models/appointment.model';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+
 import { DatabaseService } from 'src/app/shared/services/database.service';
+import * as _moment from 'moment';
+import { Observable, Subscription } from 'rxjs';
+import { Appointment } from 'src/app/shared/models/appointment.model';
 
 @Component({
     selector: 'app-patient-book-appointment',
@@ -17,62 +19,46 @@ import { DatabaseService } from 'src/app/shared/services/database.service';
         { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
     ],
 })
-export class PatientBookAppointmentComponent implements OnInit {
+export class PatientBookAppointmentComponent implements OnInit, AfterViewInit {
 
-    selectedSpecialization = 'żadna';
-    selectedDoctor = 'żaden';
-    selectedAppType = 'żaden';
-    newAppointment: Appointment;
+    specializations: Observable<any>;
+    today = new Date();
+    dataSource = new MatTableDataSource<Appointment>();
+    appointments: Appointment[];
+    appointmentSubscription: Subscription;
+    displayedColumns = ['date', 'timeStart', 'doctor', 'actions'];
+
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+
 
     constructor(
-        private _adapter: DateAdapter<any>,
+        private adapter: DateAdapter<any>,
         private dbService: DatabaseService
     ) { }
 
-    specializations: Specialization[] = [
-        { name: 'internista' },
-        { name: 'ortopeda' },
-        { name: 'kardiolog' }
-    ];
-
-    doctors: Doctor[] = [
-        { name: 'Jan Kowalski' },
-        { name: 'Łukasz Wesołowski' },
-        { name: 'Tomasz Królicki' }
-    ];
-
-    appointmentTypes: AppointmentType[] = [
-        { name: 'Wizyta kotrolna' },
-        { name: 'Operacja' },
-        { name: 'Zabieg' }
-    ];
-
     ngOnInit() {
-        this._adapter.setLocale('pl');
+        this.adapter.setLocale('pl');
+        this.specializations = this.dbService.getAllSpecializations();
+        this.appointmentSubscription = this.dbService.appointmentsChanged
+            .subscribe(appointments => {
+                this.dataSource.data = appointments;
+            }, error => {
+                console.log(error);
+            });
     }
 
-    onSubmit(form: NgForm) {
-        const appointment: Appointment = {
-            patient: form.value.patient,
-            doctorUid: form.value.doctor,
-            date: new Date(`${form.value.date.format('MM.DD.YYYY')} ${form.value.startTime}`),
-            type: form.value.type
-        };
-        this.dbService.addAppointment(appointment);
-        // console.log(form.value.date.format('DD.MM.YYYY'));
-        // console.log(form.value.appointmentDate._d.getTime);
+    ngAfterViewInit() {
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
     }
 
-}
+    onSubmit(f: NgForm) {
+        console.log(f.value);
+        this.dbService.searchAppointments(f.value.date.toDate());
+    }
 
-export interface Specialization {
-    name?: string;
-}
+    refreshTable() {
 
-export interface Doctor {
-    name?: string;
-}
-
-export interface AppointmentType {
-    name?: string;
+    }
 }

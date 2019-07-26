@@ -1,52 +1,3 @@
-<!-- <div fxLayout="row"
-     fxLayoutAlign="center"
-     class="booking-form">
-    <form #f="ngForm"
-          fxLayoutGap="10px"
-          fxFlex.xs="300px"
-          fxFlex.gt-xs="600px"
-          fxLayout="column"
-          fxLayoutAlign="center center">
-        <mat-form-field>
-            <mat-label>Wybierz specjalistę</mat-label>
-            <mat-select [(value)]="selectedSpecialization"
-                        required
-                        ngModel
-                        name="specialization">
-                <mat-option *ngFor="let spec of specializations"
-                            [value]="spec.name">{{ spec.name | titlecase }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Wybierz lekarza</mat-label>
-            <mat-select [(value)]="selectedDoctor"
-                        required
-                        ngModel
-                        name="doctor">
-                <mat-option *ngFor="let doc of doctors"
-                            [value]="doc.name">{{ doc.name | titlecase }}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-            <input matInput
-                   [matDatepicker]="picker"
-                   placeholder="Wybierz datę"
-                   ngModel
-                   name="dateOfBirth"
-                   required>
-            <mat-datepicker-toggle matSuffix
-                                   [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <button mat-raised-button
-                color="primary"
-                class="btn-submit"
-                (click)="onSubmit(f)"
-                [disabled]="f.invalid">Wyszukaj wizyty</button>
-    </form>
-</div> -->
-
-
 <div fxLayout="row"
      fxLayoutAlign="center"
      class="booking-form">
@@ -58,56 +9,30 @@
           fxLayoutAlign="center center">
 
         <mat-form-field>
-            <input type="text"
-                   matInput
-                   ngModel
-                   required
-                   placeholder="Pacjent"
-                   name="patient">
-        </mat-form-field>
-
-        <mat-form-field>
             <mat-label>Wybierz lekarza</mat-label>
-            <mat-select [(value)]="selectedDoctor"
-                        required
+            <mat-select required
                         ngModel
                         name="doctor">
-                <mat-option *ngFor="let doc of doctors"
-                            [value]="doc.name">{{ doc.name | titlecase }}</mat-option>
+                <mat-option *ngFor="let spec of specializations | async"
+                            [value]="spec.name">{{ spec.name | titlecase }}</mat-option>
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Rodzaj wizyty</mat-label>
-            <mat-select [(value)]="selectedAppType"
-                        required
-                        ngModel
-                        name="type">
-                <mat-option *ngFor="let type of appointmentTypes"
-                            [value]="type.name">{{ type.name | titlecase }}</mat-option>
-            </mat-select>
-        </mat-form-field>
+
 
         <div fxLayout.xs="column"
              fxLayoutGap.gt-xs="20px">
             <mat-form-field>
                 <input matInput
                        [matDatepicker]="picker"
-                       placeholder="Wybierz datę"
+                       [min]="today"
+                       placeholder="Terminy od"
                        ngModel
                        name="date"
                        required>
                 <mat-datepicker-toggle matSuffix
                                        [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field>
-                <input matInput
-                       type="time"
-                       ngModel
-                       name="startTime"
-                       placeholder="Godzina">
             </mat-form-field>
         </div>
 
@@ -117,4 +42,39 @@
                 (click)="onSubmit(f)"
                 [disabled]="f.invalid">Wyszukaj wizyty</button>
     </form>
+</div>
+
+<div>
+    <mat-table [dataSource]="dataSource"
+               matSort>
+
+        <ng-container matColumnDef="date">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header>Data</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.date.toDate() | date:'dd.MM.yyyy' }}</mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="timeStart">
+            <mat-header-cell *matHeaderCellDef
+                             mat-sort-header>Godzina</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.timeStart }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="doctor">
+            <mat-header-cell *matHeaderCellDef>Lekarz</mat-header-cell>
+            <mat-cell *matCellDef="let element">{{ element.doctorUid }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef>Akcje</mat-header-cell>
+            <mat-cell *matCellDef="let element">
+                <button mat-flat-button
+                        color="primary">Szczegóły</button>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
 </div>

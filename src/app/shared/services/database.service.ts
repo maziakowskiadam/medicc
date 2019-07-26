@@ -107,8 +107,12 @@ export class DatabaseService {
 
     // Appointments
 
-    addAppointment(appointment: Appointment) {
-        this.addDataToDatabase(appointment);
+    searchAppointments(date: Date) {
+        this.afs.collection('appointments', ref => ref.where('date', '>=', date))
+            .valueChanges().subscribe((appointments: Appointment[]) => {
+                this.appointments = appointments;
+                this.appointmentsChanged.next([...this.appointments]);
+            });
     }
 
     fetchAllAppointments() {
@@ -166,6 +170,13 @@ export class DatabaseService {
     }
 
 
+    // Specializations
+
+    getAllSpecializations() {
+        return this.afs.collection('specializations').valueChanges();
+    }
+
+
     // Others
 
     cancelSubs() {
@@ -176,7 +187,4 @@ export class DatabaseService {
         }
     }
 
-    private addDataToDatabase(appointment: Appointment) {
-        this.afs.collection('appointments').add(appointment);
-    }
 }

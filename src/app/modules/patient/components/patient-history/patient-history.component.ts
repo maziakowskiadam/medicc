@@ -14,10 +14,9 @@ import { DatabaseService } from 'src/app/shared/services/database.service';
 })
 export class PatientHistoryComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    displayedColumns = ['date', 'doctor', 'actions'];
     dataSource = new MatTableDataSource<Appointment>();
-    appointments: Appointment[];
     appointmentSubscription: Subscription;
+    displayedColumns = ['date', 'doctor', 'actions'];
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
     @ViewChild(MatSort, { static: true }) sort: MatSort;
