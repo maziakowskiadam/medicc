@@ -4,10 +4,11 @@
 
 This a prototype application for a health care organization.
 
-Technologies:
-- Angular 8 with Angular Materials and Firestore
-- Data storage: Firebase
+## Tech stack
 
+- Angular 8
+- Firebase
+- Angular Material
 
 ## Run locally
 
