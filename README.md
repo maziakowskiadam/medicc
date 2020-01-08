@@ -9,6 +9,7 @@ This a prototype application for a health care organization.
 - Angular 8
 - Firebase
 - Angular Material
+- Angular Firestore
 
 ## Run locally
 
