@@ -1,5 +1,14 @@
 # Medicc
 
+## About this project
+
+This a prototype application for a health care organization.
+
+Technologies:
+- Angular 8 with Angular Materials and Firestore
+- Data storage: Firebase
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
 
 ## Development server
